@@ -33,6 +33,10 @@ const SearchContainer = styled.div`
     .formContainer {
         max-width: 500px;
     }
+    ul {
+        display: flex;
+        flex-wrap: wrap;
+    }
 `
 
 export default function Search() {

@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import OrderSummary from "./orderSummary";
+import { selectCart } from "../redux.js/cartSlice";
 
 const CartContainer = styled.div`
     .line {

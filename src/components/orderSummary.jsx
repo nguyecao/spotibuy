@@ -1,4 +1,7 @@
 import styled from "@emotion/styled"
+import { selectCart } from "../redux.js/cartSlice"
+import { useSelector } from "react-redux";
+import { useState } from "react";
 
 const OrderSummaryContainer = styled.div`
     background-color: #212121;
@@ -41,6 +44,13 @@ const OrderSummaryContainer = styled.div`
 `
 
 export default function OrderSummary() {
+    const cartItems = useSelector(selectCart)
+    function converTime(ms) {
+        var millis = parseFloat(ms)
+        var minutes = Math.floor(millis / 60000)
+        var seconds = ((millis % 60000) / 1000).toFixed(0)
+        return minutes + ":" + (seconds < 10 ? '0' : '') + seconds
+    }
 
     return (
         <OrderSummaryContainer>
@@ -48,10 +58,9 @@ export default function OrderSummary() {
                 e.preventDefault()
             }}>
                 <h3>Order Summary</h3>
-                { /* render dynamically */ <>
-                    <div className='summaryItem'><span>I Forgot That You Existed</span><span className='price'>2:50</span></div>
-                    <div className='summaryItem'><span>I Forgot That You Existed</span><span className='price'>2:50</span></div>
-                </>}
+                {cartItems.map(song => (
+                    <div id={song.id} className='summaryItem'><span>{song.name}</span><span className='price'>{converTime(song.duration_ms)}</span></div>
+                ))}
                 <div className='line'></div>
                 { /* render dynamically */
                     <h3 className='summaryItem'><span>Order Total:</span><span className='price'>5:00</span></h3>

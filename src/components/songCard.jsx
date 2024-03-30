@@ -3,8 +3,12 @@ import { IoMdPlay } from "react-icons/io"
 import { IoVolumeMediumOutline } from "react-icons/io5"
 import { addToCart } from "../redux.js/cartSlice"
 import { useDispatch } from "react-redux"
+import { useSelector } from "react-redux"
+import { selectCart } from "../redux.js/cartSlice"
+import { legacy_createStore } from "@reduxjs/toolkit"
 
 const SongCardContainer = styled.div`
+    margin: 1px;
     display: flex;
     flex-direction: column;
     background-color: #212121;
@@ -64,21 +68,37 @@ const SongCardContainer = styled.div`
     }
     .songName {
         overflow: hidden;
-        white-space: nowrap
+        white-space: nowrap;
+        max-width: 250px;
+    }
+    .imgContainer {
+        display: flex;
+        width: 250px;
+        height: 250px;
+        background-color: black;
+    }
+    img {
+        width: 100%;
+        margin: auto;
     }
 `
 
 export default function SongCard({song}) {
     const dispatch = useDispatch()
+    const cart = useSelector(selectCart)
 
     const handleClick = () => {
-        dispatch(addToCart('== addToCart clicked'))
+        const item = cart.find(i => i.id === song.id)
+        if (!item) {
+            dispatch(addToCart(song))
+        }
     }
-    console.log(song)
 
     return (
         <SongCardContainer>
-            <img src={song.album ? song.album.images[0].url : ''}/>
+            <div className='imgContainer'>
+                <img src={song.album ? song.album.images[0].url : ''}/>
+            </div>
             <p className='artist'>{song.artists[0].name}</p>
             <p className='songName'>{song.name}</p>
             <div className='controls'>
