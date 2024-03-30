@@ -1,7 +1,10 @@
 import styled from '@emotion/styled'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
 import { TiShoppingCart } from "react-icons/ti"
+import { useDispatch } from 'react-redux'
+import { setToken } from './redux.js/tokenSlice'
+import axios from 'axios'
 
 const AppContainer = styled.div`
     nav {
@@ -43,6 +46,40 @@ const AppContainer = styled.div`
 `
 
 function App({ children }) {
+    const dispatch = useDispatch()
+
+    const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID
+    const CLIENT_SECRET = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET
+
+    useEffect(() => {
+        const authParams = {
+            grant_type: 'client_credentials',
+            client_id: CLIENT_ID,
+            client_secret: CLIENT_SECRET
+        }
+        axios.post('https://accounts.spotify.com/api/token', null, {
+            params: authParams,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        })
+            .then(response => {
+                dispatch(setToken(response.data.access_token));
+            })
+            .catch(error => {
+                console.error('Error fetching token:', error);
+            })
+        // const authParams = {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/x-www-form-urlencoded',
+        //     },
+        //     body: 'grant_type=client_credentials&client_id=' + CLIENT_ID + '&client_secret=' + CLIENT_SECRET
+        // }
+        // fetch('https://accounts.spotify.com/api/token', authParams)
+        //     .then(res => res.json())
+        //     .then(data => dispatch(setToken(data.access_token)))
+    }, [])
 
     return (
         <AppContainer>

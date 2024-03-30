@@ -1,14 +1,21 @@
 import styled from "@emotion/styled"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { IoIosSearch } from "react-icons/io"
 import SongCard from "./songCard"
+import { useDispatch, useSelector } from "react-redux"
+import { selectToken, setToken } from "../redux.js/tokenSlice"
+import axios from "axios"
 
 const SearchContainer = styled.div`
-    input {
+    #search {
         border: none;
         background-color: #212121;
+        border-radius: 99999px;
         margin: 5px;
         color: white;
+        width: 500px;
+        height: 30px;
+        font-size: 16px;
     }
     form {
         background-color: #212121;
@@ -23,21 +30,53 @@ const SearchContainer = styled.div`
         margin-left: 6px;
         margin-right: 5px;
     }
+    .formContainer {
+        max-width: 500px;
+    }
 `
 
 export default function Search() {
     const [searchInput, setSearchInput] = useState(null)
+    const dispatch = useDispatch()
+    const [searchResults, setSearchResults] = useState([])
+
+    const token = useSelector(selectToken)
+
+    function handleSearch() {
+        const query = searchInput
+        const type = 'track'
+        const url = `https://api.spotify.com/v1/search?q=${query}&type=${type}`
+        axios.get(url, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(res => {
+                setSearchResults(res.data.tracks.items)
+            })
+            .catch(err => {
+                console.error('Error:', err)
+            })
+    }
+
     return (
         <SearchContainer>
-            <form onSubmit={e => {
-                e.preventDefault()
-            }}>
-                <IoIosSearch className='search-icon'/>
-                <input id='search' type='text' onChange={(e) => {
-                    setSearchInput(e.target.value)
-                }}/>
-            </form>
-            { <SongCard/> /* render dynamically */ }
+            <div className='formContainer'>
+                <form onSubmit={e => {
+                    e.preventDefault()
+                    handleSearch()
+                }}>
+                    <IoIosSearch className='search-icon' size={25}/>
+                    <input id='search' type='text' onChange={(e) => {
+                        setSearchInput(e.target.value)
+                    }}/>
+                </form>
+            </div>
+            <ul>
+                {searchResults.length !== 0 && searchResults.map(song => (
+                    <li key={song.id}><SongCard song={song}/></li>
+                ))}
+            </ul>
         </SearchContainer>
     )
 }

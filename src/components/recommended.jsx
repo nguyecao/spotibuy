@@ -10,7 +10,6 @@ export default function Recommended() {
         <RecommendedContainer>
             <h2>Recommended Artists</h2>
             <h2>Recommended Songs</h2>
-            { <SongCard/> /* render dynamically */ }
         </RecommendedContainer>
     )
 }

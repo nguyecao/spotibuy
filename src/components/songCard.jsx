@@ -9,6 +9,7 @@ const SongCardContainer = styled.div`
     flex-direction: column;
     background-color: #212121;
     width: 250px;
+    height: 394px;
     .artist {
         font-weight: bold;
     }
@@ -45,7 +46,8 @@ const SongCardContainer = styled.div`
         font-weight: 600;
         font-size: 18px;
         padding: 10px;
-        margin-top: 7px;
+        margin-top: auto;
+
     }
     .addToCartBtn:hover {
         background-color: #1db954;
@@ -60,20 +62,25 @@ const SongCardContainer = styled.div`
         margin: 5px;
         color: white;
     }
+    .songName {
+        overflow: hidden;
+        white-space: nowrap
+    }
 `
 
-export default function SongCard() {
+export default function SongCard({song}) {
     const dispatch = useDispatch()
 
     const handleClick = () => {
         dispatch(addToCart('== addToCart clicked'))
     }
+    console.log(song)
 
     return (
         <SongCardContainer>
-            <img src='https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647'/>
-            <p className='artist'>Taylor Swift</p>
-            <p>I Forgot That You Existed</p>
+            <img src={song.album ? song.album.images[0].url : ''}/>
+            <p className='artist'>{song.artists[0].name}</p>
+            <p className='songName'>{song.name}</p>
             <div className='controls'>
                 <button className='playBtn'><IoMdPlay size={20} color='black' className='playIcon'/></button>
                 <IoVolumeMediumOutline size={30} className='volumeIcon'/>

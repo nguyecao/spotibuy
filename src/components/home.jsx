@@ -1,6 +1,7 @@
 import styled from "@emotion/styled"
 import { useSearchParams } from "react-router-dom"
 import { useEffect } from "react"
+import axios from "axios"
 
 const HomeContainer = styled.form`
     background-color: #212121;
@@ -33,10 +34,8 @@ export default function Home() {
     const baseUrl = 'https://accounts.spotify.com/authorize'
     const url = `${baseUrl}?${queryParams.toString()}`
 
-    // const [searchParams, setSearchParams] = useSearchParams()
-    // const authCode = searchParams.get('code')
-    // useEffect(() => {
-    // }, [authCode])
+    const [searchParams, setSearchParams] = useSearchParams()
+    const authCode = searchParams.get('code')
 
     return (
         <HomeContainer onSubmit={e => {

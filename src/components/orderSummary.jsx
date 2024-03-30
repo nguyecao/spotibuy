@@ -19,6 +19,7 @@ const OrderSummaryContainer = styled.div`
         font-size: 32px;
         font-weight: bold;
         padding: 20px;
+        cursor: pointer;
     }
     button:hover {
         background-color: #1db954;
