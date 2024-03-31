@@ -41,7 +41,6 @@ const SearchContainer = styled.div`
 
 export default function Search() {
     const [searchInput, setSearchInput] = useState(null)
-    const dispatch = useDispatch()
     const [searchResults, setSearchResults] = useState([])
 
     const token = useSelector(selectToken)
