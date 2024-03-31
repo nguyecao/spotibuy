@@ -5,10 +5,9 @@ import { addToCart } from "../redux.js/cartSlice"
 import { useDispatch } from "react-redux"
 import { useSelector } from "react-redux"
 import { selectCart } from "../redux.js/cartSlice"
-import { legacy_createStore } from "@reduxjs/toolkit"
 
 const SongCardContainer = styled.div`
-    margin: 1px;
+    margin: 2px;
     display: flex;
     flex-direction: column;
     background-color: #212121;

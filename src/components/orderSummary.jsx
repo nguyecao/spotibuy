@@ -1,7 +1,7 @@
 import styled from "@emotion/styled"
 import { selectCart } from "../redux.js/cartSlice"
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const OrderSummaryContainer = styled.div`
     background-color: #212121;
@@ -45,12 +45,21 @@ const OrderSummaryContainer = styled.div`
 
 export default function OrderSummary() {
     const cartItems = useSelector(selectCart)
+    const [totalTime, setTotalTime] = useState(0)
     function converTime(ms) {
         var millis = parseFloat(ms)
         var minutes = Math.floor(millis / 60000)
         var seconds = ((millis % 60000) / 1000).toFixed(0)
         return minutes + ":" + (seconds < 10 ? '0' : '') + seconds
     }
+
+    useEffect(() => {
+        var time = 0
+        cartItems.forEach(song => {
+            time += song.duration_ms
+        })
+        setTotalTime(time)
+    }, [cartItems.length])
 
     return (
         <OrderSummaryContainer>
@@ -59,12 +68,10 @@ export default function OrderSummary() {
             }}>
                 <h3>Order Summary</h3>
                 {cartItems.map(song => (
-                    <div id={song.id} className='summaryItem'><span>{song.name}</span><span className='price'>{converTime(song.duration_ms)}</span></div>
+                    <div key={song.id} className='summaryItem'><span>{song.name}</span><span className='price'>{converTime(song.duration_ms)}</span></div>
                 ))}
                 <div className='line'></div>
-                { /* render dynamically */
-                    <h3 className='summaryItem'><span>Order Total:</span><span className='price'>5:00</span></h3>
-                }
+                <h3 className='summaryItem'><span>Order Total:</span><span className='price'>{converTime(totalTime)}</span></h3>
                 <div className='acknowledgement'>
                     <label>
                         <input type='checkbox'/>
