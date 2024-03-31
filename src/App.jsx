@@ -48,11 +48,15 @@ const AppContainer = styled.div`
     .cartNumber {
         background-color: #1db954;
         border-radius: 99999px;
-        width: 18px;
-        height: 18px;
+        width: 19px;
+        height: 19px;
         font-weight: bold;
         font-size: 12px;
         text-align: center;
+    }
+    .count0 {
+        background-color: #212121;
+        color: #212121;
     }
     .cart {
         display: flex;
@@ -93,7 +97,7 @@ function App({ children }) {
                 <h1><NavLink to={'/'} id='name'>Spotibuy</NavLink></h1>
                 <NavLink className='cart' to={'/cart'}>
                     <TiShoppingCart size={40} color='white'/>
-                    <div className='cartNumber'>{cartItems.length}</div>
+                    <div className={'cartNumber count' + cartItems.length}>{cartItems.length}</div>
                 </NavLink>
             </nav>
             <ul>
