@@ -5,7 +5,8 @@ import { addToCart } from "../redux.js/cartSlice"
 import { useDispatch } from "react-redux"
 import { useSelector } from "react-redux"
 import { selectCart } from "../redux.js/cartSlice"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
+import { MdPause } from "react-icons/md"
 
 const SongCardContainer = styled.div`
     margin: 2px;
@@ -38,7 +39,7 @@ const SongCardContainer = styled.div`
         display: flex;
         margin-right: 10px;
     }
-    .playIcon {
+    .playIcon, .pauseIcon {
         margin: auto;
         padding-left: 2px;
         color: #212121;
@@ -93,16 +94,22 @@ const SongCardContainer = styled.div`
 `
 
 export default function SongCard({song}) {
-    const [previewUrl, setPreviewUrl] = useState(null)
+    const [isPlaying, setIsPlaying] = useState(false)
     const dispatch = useDispatch()
     const cart = useSelector(selectCart)
-    const [volume, setVolume] = useState(0.5)
+    const audioRef = useRef(new Audio(song.preview_url))
 
     useEffect(() => {
-        setPreviewUrl(song.preview_url)
-    }, [])
+        const handleAudioEnded = () => {
+            setIsPlaying(false)
+        }
+        audioRef.current.addEventListener('ended', handleAudioEnded)
+        return () => {
+            audioRef.current.removeEventListener('ended', handleAudioEnded)
+        }
+    })
 
-    const handleClick = () => {
+    const handleAddToCart = () => {
         const item = cart.find(i => i.id === song.id)
         if (!item) {
             dispatch(addToCart(song))
@@ -110,14 +117,14 @@ export default function SongCard({song}) {
     }
 
     const handlePlay = () => {
-        const preview = new Audio(previewUrl)
-        // preview.volume = volume
-        preview.play()
-    }
-
-    const handleVolumeChange = (event) => {
-        // const newVolume = parseFloat(event.target.value);
-        // setVolume(newVolume);
+        if (audioRef.current.paused) {
+            audioRef.current.play()
+            setIsPlaying(true)
+        } else {
+            audioRef.current.pause()
+            setIsPlaying(false)
+            audioRef.current.currentTime = 0
+        }
     }
 
     return (
@@ -128,11 +135,17 @@ export default function SongCard({song}) {
             <p className='artist'>{song.artists[0].name}</p>
             <p className='songName'>{song.name}</p>
             <div className='controls'>
-                <button className='playBtn' onClick={handlePlay}><IoMdPlay size={20} className='playIcon'/></button>
+                <button className='playBtn' onClick={handlePlay}>
+                    {
+                        isPlaying ?
+                        <MdPause size={20} className='pauseIcon'/> :
+                        <IoMdPlay size={20} className='playIcon'/>
+                    }
+                </button>
                 <IoVolumeMediumOutline size={30} className='volumeIcon'/>
-                <input type='range' value={volume} min={0} max={1} step={0.01} onChange={handleVolumeChange} />
+                <input type='range'/>
             </div>
-            <button className='addToCartBtn' onClick={handleClick}>Add to Cart</button>
+            <button className='addToCartBtn' onClick={handleAddToCart}>Add to Cart</button>
         </SongCardContainer>
     )
 }

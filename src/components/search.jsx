@@ -1,5 +1,5 @@
 import styled from "@emotion/styled"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { IoIosSearch } from "react-icons/io"
 import SongCard from "./songCard"
 import { useDispatch, useSelector } from "react-redux"
