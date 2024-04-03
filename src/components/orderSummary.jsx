@@ -41,6 +41,9 @@ const OrderSummaryContainer = styled.div`
         color: #B3B3B3;
         display: flex;
     }
+    .line {
+        margin-top: 10px;
+    }
 `
 
 export default function OrderSummary() {
@@ -70,7 +73,7 @@ export default function OrderSummary() {
                 {cartItems.map(song => (
                     <div key={song.id} className='summaryItem'><span>{song.name}</span><span className='price'>{converTime(song.duration_ms)}</span></div>
                 ))}
-                <div className='line'></div>
+                <div className='line'/>
                 <h3 className='summaryItem'><span>Order Total:</span><span className='price'>{converTime(totalTime)}</span></h3>
                 <div className='acknowledgement'>
                     <label>

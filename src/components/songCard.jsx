@@ -9,7 +9,7 @@ import { useEffect, useState, useRef } from "react"
 import { MdPause } from "react-icons/md"
 
 const SongCardContainer = styled.div`
-    margin: 2px;
+    margin: 4px;
     display: flex;
     flex-direction: column;
     background-color: #212121;
@@ -98,6 +98,7 @@ export default function SongCard({song}) {
     const dispatch = useDispatch()
     const cart = useSelector(selectCart)
     const audioRef = useRef(new Audio(song.preview_url))
+    const [volume, setVolume] = useState(0.5)
 
     useEffect(() => {
         const handleAudioEnded = () => {
@@ -106,8 +107,10 @@ export default function SongCard({song}) {
         audioRef.current.addEventListener('ended', handleAudioEnded)
         return () => {
             audioRef.current.removeEventListener('ended', handleAudioEnded)
+            audioRef.current.pause()
+            audioRef.current.currentTime = 0
         }
-    })
+    }, [song.preview_url])
 
     const handleAddToCart = () => {
         const item = cart.find(i => i.id === song.id)
@@ -127,6 +130,12 @@ export default function SongCard({song}) {
         }
     }
 
+    const handleVolumeChange = (e) => {
+        const newVolume = parseFloat(e.target.value)
+        setVolume(newVolume)
+        audioRef.current.volume = newVolume
+    }
+
     return (
         <SongCardContainer>
             <div className='imgContainer'>
@@ -143,7 +152,7 @@ export default function SongCard({song}) {
                     }
                 </button>
                 <IoVolumeMediumOutline size={30} className='volumeIcon'/>
-                <input type='range'/>
+                <input type='range' min='0' max='1' step='0.01' value={volume} onChange={handleVolumeChange}/>
             </div>
             <button className='addToCartBtn' onClick={handleAddToCart}>Add to Cart</button>
         </SongCardContainer>
