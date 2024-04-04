@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux"
 import { useSelector } from "react-redux"
 import { selectCart } from "../redux.js/cartSlice"
 import { useEffect, useState, useRef } from "react"
-import { MdPause } from "react-icons/md"
+import { IoMdPause } from "react-icons/io"
 
 const SongCardContainer = styled.div`
     margin: 4px;
@@ -15,6 +15,7 @@ const SongCardContainer = styled.div`
     background-color: #212121;
     width: 250px;
     height: 394px;
+    z-index: 2;
     .artist {
         font-weight: bold;
     }
@@ -31,6 +32,7 @@ const SongCardContainer = styled.div`
         display: flex;
         padding-left: 10px;
         padding-right: 10px;
+        position: relative;
     }
     .playBtn {
         border-radius: 50%;
@@ -38,11 +40,18 @@ const SongCardContainer = styled.div`
         width: 36px;
         display: flex;
         margin-right: 10px;
+        position: relative;
     }
-    .playIcon, .pauseIcon {
+    .playIcon {
         margin: auto;
         padding-left: 2px;
         color: #212121;
+    }
+    .pauseIcon {
+        margin: auto;
+        color: #212121;
+        padding-right: 1px;
+        padding-left: 1px;
     }
     .volumeIcon {
         margin: auto;
@@ -91,8 +100,18 @@ const SongCardContainer = styled.div`
         border-color: transparent transparent transparent #121212;
         transform: rotate(0deg);
     }
-    .noPreview button {
-        
+    .noPreview {
+        background-color: #535353;
+        cursor: not-allowed;
+    }
+    .noPreviewMsg {
+        position: absolute;
+        z-index: 2;
+        font-size: 14px;
+        background-color: #121212;
+        padding: 8px;
+        margin: auto;
+        margin-left: 40px;
     }
 `
 
@@ -102,6 +121,14 @@ export default function SongCard({song}) {
     const cart = useSelector(selectCart)
     const audioRef = useRef(new Audio(song.preview_url))
     const [volume, setVolume] = useState(0.5)
+    const [hover, setHover] = useState(false)
+
+    const onHover = () => {
+        setHover(true)
+      }
+      const onLeave = () => {
+        setHover(false)
+      }
 
     useEffect(() => {
         const handleAudioEnded = () => {
@@ -150,10 +177,11 @@ export default function SongCard({song}) {
             <p className='artist'>{song.artists[0].name}</p>
             <p className='songName'>{song.name}</p>
             <div className='controls'>
-                <button className={'playBtn ' + ((song.preview_url === null) ? 'noPreview' : '')} onClick={handlePlay}>
+                {hover && song.preview_url === null ? <p onMouseEnter={onHover} onMouseLeave={onLeave} className='noPreviewMsg'>{"No preview\navailable"}</p> : null }
+                <button className={'playBtn ' + ((song.preview_url === null) ? 'noPreview' : '')} onClick={handlePlay} onMouseEnter={onHover} onMouseLeave={onLeave}>
                     {
                         isPlaying ?
-                        <MdPause size={20} className='pauseIcon'/> :
+                        <IoMdPause size={20} className='pauseIcon'/> :
                         <IoMdPlay size={20} className='playIcon'/>
                     }
                 </button>
