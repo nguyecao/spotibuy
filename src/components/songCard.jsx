@@ -120,7 +120,7 @@ export default function SongCard({song}) {
     const dispatch = useDispatch()
     const cart = useSelector(selectCart)
     const audioRef = useRef(new Audio(song.preview_url))
-    const [volume, setVolume] = useState(0.5)
+    const [volume, setVolume] = useState(0.15)
     const [hover, setHover] = useState(false)
 
     const onHover = () => {
@@ -131,6 +131,7 @@ export default function SongCard({song}) {
       }
 
     useEffect(() => {
+        audioRef.current.volume = volume
         const handleAudioEnded = () => {
             setIsPlaying(false)
         }
@@ -167,7 +168,6 @@ export default function SongCard({song}) {
         setVolume(newVolume)
         audioRef.current.volume = newVolume
     }
-    console.log(song.preview_url)
 
     return (
         <SongCardContainer>
@@ -177,7 +177,11 @@ export default function SongCard({song}) {
             <p className='artist'>{song.artists[0].name}</p>
             <p className='songName'>{song.name}</p>
             <div className='controls'>
-                {hover && song.preview_url === null ? <p onMouseEnter={onHover} onMouseLeave={onLeave} className='noPreviewMsg'>{"No preview\navailable"}</p> : null }
+                {
+                    hover && song.preview_url === null ?
+                    <p onMouseEnter={onHover} onMouseLeave={onLeave} className='noPreviewMsg'>No preview available</p> :
+                    null
+                }
                 <button className={'playBtn ' + ((song.preview_url === null) ? 'noPreview' : '')} onClick={handlePlay} onMouseEnter={onHover} onMouseLeave={onLeave}>
                     {
                         isPlaying ?

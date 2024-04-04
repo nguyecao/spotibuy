@@ -68,29 +68,6 @@ function App({ children }) {
 
     const cartItems = useSelector(selectCart)
 
-    const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID
-    const CLIENT_SECRET = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET
-
-    useEffect(() => {
-        const authParams = {
-            grant_type: 'client_credentials',
-            client_id: CLIENT_ID,
-            client_secret: CLIENT_SECRET
-        }
-        axios.post('https://accounts.spotify.com/api/token', null, {
-            params: authParams,
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        })
-            .then(response => {
-                dispatch(setToken(response.data.access_token));
-            })
-            .catch(error => {
-                console.error('Error fetching token:', error);
-            })
-    }, [])
-
     return (
         <AppContainer>
             <nav>

@@ -2,6 +2,8 @@ import styled from "@emotion/styled"
 import { selectCart } from "../redux.js/cartSlice"
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import { MdCheckBoxOutlineBlank } from "react-icons/md"
+import { MdOutlineCheckBox } from "react-icons/md"
 
 const OrderSummaryContainer = styled.div`
     background-color: #212121;
@@ -44,11 +46,20 @@ const OrderSummaryContainer = styled.div`
     .line {
         margin-top: 10px;
     }
+    .checkBox {
+        margin:auto;
+        margin-right: 10px;
+    }
+    .notAcknowledged:hover {
+        cursor: not-allowed;
+        background-color: #535353;
+    }
 `
 
 export default function OrderSummary() {
     const cartItems = useSelector(selectCart)
     const [totalTime, setTotalTime] = useState(0)
+    const [acknowledge, setAcknowledge] = useState(false)
     function converTime(ms) {
         var millis = parseFloat(ms)
         var minutes = Math.floor(millis / 60000)
@@ -76,12 +87,16 @@ export default function OrderSummary() {
                 <div className='line'/>
                 <h3 className='summaryItem'><span>Order Total:</span><span className='price'>{converTime(totalTime)}</span></h3>
                 <div className='acknowledgement'>
-                    <label>
-                        <input type='checkbox'/>
+                    <label onClick={() => {setAcknowledge(!acknowledge)}}>
+                        {
+                            !acknowledge ?
+                            <MdCheckBoxOutlineBlank size={30} className='checkBox'/> :
+                            <MdOutlineCheckBox size={30} className='checkBox'/>
+                        }
                         <p>I understand that checking out will add a new playlist to my Spotify account.</p>
                     </label>
                 </div>
-                <button type='submit'>Check Out</button>
+                <button type='submit' className={acknowledge ? 'acknowledged' : 'notAcknowledged'}>Check Out</button>
             </form>
         </OrderSummaryContainer>
     )
