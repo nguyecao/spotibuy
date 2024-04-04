@@ -91,6 +91,9 @@ const SongCardContainer = styled.div`
         border-color: transparent transparent transparent #121212;
         transform: rotate(0deg);
     }
+    .noPreview button {
+        
+    }
 `
 
 export default function SongCard({song}) {
@@ -120,13 +123,15 @@ export default function SongCard({song}) {
     }
 
     const handlePlay = () => {
-        if (audioRef.current.paused) {
-            audioRef.current.play()
-            setIsPlaying(true)
-        } else {
-            audioRef.current.pause()
-            setIsPlaying(false)
-            audioRef.current.currentTime = 0
+        if (song.preview_url) {
+            if (audioRef.current.paused) {
+                audioRef.current.play()
+                setIsPlaying(true)
+            } else {
+                audioRef.current.pause()
+                setIsPlaying(false)
+                audioRef.current.currentTime = 0
+            }
         }
     }
 
@@ -135,6 +140,7 @@ export default function SongCard({song}) {
         setVolume(newVolume)
         audioRef.current.volume = newVolume
     }
+    console.log(song.preview_url)
 
     return (
         <SongCardContainer>
@@ -144,7 +150,7 @@ export default function SongCard({song}) {
             <p className='artist'>{song.artists[0].name}</p>
             <p className='songName'>{song.name}</p>
             <div className='controls'>
-                <button className='playBtn' onClick={handlePlay}>
+                <button className={'playBtn ' + ((song.preview_url === null) ? 'noPreview' : '')} onClick={handlePlay}>
                     {
                         isPlaying ?
                         <MdPause size={20} className='pauseIcon'/> :
