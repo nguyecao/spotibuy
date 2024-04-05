@@ -112,8 +112,11 @@ const SongCardContainer = styled.div`
         padding: 8px;
         margin: auto;
         margin-left: 40px;
-        animation: fadeIn 0.25s;
-        /* animation-delay: 0.5s; */
+        animation: fadeIn .25s;
+    }
+    @keyframes fadeIn {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
     }
 `
 // parent element need to pass:
@@ -125,12 +128,14 @@ export default function SongCard({song, currentSong, setCurrentSong, songRef}) {
     const cart = useSelector(selectCart)
     const [volume, setVolume] = useState(0.15)
     const [hover, setHover] = useState(false)
+    let timeout
 
     const onHover = () => {
-        setHover(true)
-      }
+        timeout = setTimeout(() => {setHover(true)}, 250)
+    }
     const onLeave = () => {
-    setHover(false)
+        setHover(false)
+        clearTimeout(timeout)
     }
 
     // initalize song
@@ -157,6 +162,7 @@ export default function SongCard({song, currentSong, setCurrentSong, songRef}) {
     useEffect(() => {
         if (currentSong !== song.id) {
             setIsPlaying(false)
+            clearTimeout(timeout)
         }
     }, [currentSong])
 
