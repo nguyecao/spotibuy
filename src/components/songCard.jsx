@@ -112,6 +112,8 @@ const SongCardContainer = styled.div`
         padding: 8px;
         margin: auto;
         margin-left: 40px;
+        animation: fadeIn 0.25s;
+        /* animation-delay: 0.5s; */
     }
 `
 // parent element need to pass:
@@ -133,6 +135,9 @@ export default function SongCard({song, currentSong, setCurrentSong, songRef}) {
 
     // initalize song
     useEffect(() => {
+        if (currentSong !== song.id) {
+            setIsPlaying(false)
+        }
         // initalize song volume
         songRef.current.volume = volume
         // handles when song ends

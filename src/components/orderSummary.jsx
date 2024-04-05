@@ -1,6 +1,6 @@
 import styled from "@emotion/styled"
-import { selectCart } from "../redux.js/cartSlice"
-import { useSelector } from "react-redux";
+import { selectCart, clearCart } from "../redux.js/cartSlice"
+import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { MdCheckBoxOutlineBlank } from "react-icons/md"
 import { MdOutlineCheckBox } from "react-icons/md"
@@ -57,6 +57,7 @@ const OrderSummaryContainer = styled.div`
 `
 
 export default function OrderSummary() {
+    const dispatch = useDispatch()
     const cartItems = useSelector(selectCart)
     const [totalTime, setTotalTime] = useState(0)
     const [acknowledge, setAcknowledge] = useState(false)
@@ -79,6 +80,9 @@ export default function OrderSummary() {
         <OrderSummaryContainer>
             <form onSubmit={ e => {
                 e.preventDefault()
+                if (acknowledge && cartItems.length > 0) {
+                    dispatch(clearCart())
+                }
             }}>
                 <h3>Order Summary</h3>
                 {cartItems.map(song => (
@@ -96,7 +100,7 @@ export default function OrderSummary() {
                         <p>I understand that checking out will add a new playlist to my Spotify account.</p>
                     </label>
                 </div>
-                <button type='submit' className={acknowledge ? 'acknowledged' : 'notAcknowledged'}>Check Out</button>
+                <button type='submit' className={(acknowledge && cartItems.length > 0) ? 'acknowledged' : 'notAcknowledged'}>Check Out</button>
             </form>
         </OrderSummaryContainer>
     )
