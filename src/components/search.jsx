@@ -43,10 +43,12 @@ export default function Search() {
     const [searchInput, setSearchInput] = useState(null)
     const [searchResults, setSearchResults] = useState([])
 
+    const songRef = useRef(new Audio())                     // required prop for SongCard
+    const [currentSong, setCurrentSong] = useState(null)    // required prop for SongCard
+
     const token = useSelector(selectToken)
 
     function handleSearch() {
-        console.log(token)
         const query = searchInput
         const type = 'track'
         const url = `https://api.spotify.com/v1/search?q=${query}&type=${type}&limit=50`
@@ -78,7 +80,9 @@ export default function Search() {
             </div>
             <ul>
                 {searchResults.length !== 0 && searchResults.map(song => (
-                    <li key={song.id}><SongCard song={song}/></li>
+                    <li key={song.id}>
+                        <SongCard song={song} currentSong={currentSong} setCurrentSong={setCurrentSong} songRef={songRef}/>
+                    </li>
                 ))}
             </ul>
         </SearchContainer>

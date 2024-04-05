@@ -5,7 +5,7 @@ import { addToCart } from "../redux.js/cartSlice"
 import { useDispatch } from "react-redux"
 import { useSelector } from "react-redux"
 import { selectCart } from "../redux.js/cartSlice"
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState } from "react"
 import { IoMdPause } from "react-icons/io"
 
 const SongCardContainer = styled.div`
@@ -114,35 +114,48 @@ const SongCardContainer = styled.div`
         margin-left: 40px;
     }
 `
-
-export default function SongCard({song}) {
+// parent element need to pass:
+//      const songRef = useRef(new Audio())
+//      const [currentSong, setCurrentSong] = useState(null)
+export default function SongCard({song, currentSong, setCurrentSong, songRef}) {
     const [isPlaying, setIsPlaying] = useState(false)
     const dispatch = useDispatch()
     const cart = useSelector(selectCart)
-    const audioRef = useRef(new Audio(song.preview_url))
     const [volume, setVolume] = useState(0.15)
     const [hover, setHover] = useState(false)
 
     const onHover = () => {
         setHover(true)
       }
-      const onLeave = () => {
-        setHover(false)
-      }
+    const onLeave = () => {
+    setHover(false)
+    }
 
+    // initalize song
     useEffect(() => {
-        audioRef.current.volume = volume
+        // initalize song volume
+        songRef.current.volume = volume
+        // handles when song ends
         const handleAudioEnded = () => {
             setIsPlaying(false)
         }
-        audioRef.current.addEventListener('ended', handleAudioEnded)
+        // stops audio when song card disappears
+        songRef.current.addEventListener('ended', handleAudioEnded)
         return () => {
-            audioRef.current.removeEventListener('ended', handleAudioEnded)
-            audioRef.current.pause()
-            audioRef.current.currentTime = 0
+            songRef.current.removeEventListener('ended', handleAudioEnded)
+            songRef.current.pause()
+            songRef.current.currentTime = 0
         }
-    }, [song.preview_url])
+    }, [])
 
+    // handles when a new song is selected
+    useEffect(() => {
+        if (currentSong !== song.id) {
+            setIsPlaying(false)
+        }
+    }, [currentSong])
+
+    // adds song to cart
     const handleAddToCart = () => {
         const item = cart.find(i => i.id === song.id)
         if (!item) {
@@ -152,13 +165,19 @@ export default function SongCard({song}) {
 
     const handlePlay = () => {
         if (song.preview_url) {
-            if (audioRef.current.paused) {
-                audioRef.current.play()
+            // creates new isntance of song if new song is selected
+            if (song.id !== currentSong) {
+                setCurrentSong(song.id)
+                songRef.current.src = song.preview_url
+                console.log('setting new song ref')
+            }
+            if (songRef.current.paused) {
                 setIsPlaying(true)
+                songRef.current.play()
             } else {
-                audioRef.current.pause()
                 setIsPlaying(false)
-                audioRef.current.currentTime = 0
+                songRef.current.pause()
+                songRef.current.currentTime = 0
             }
         }
     }
@@ -166,7 +185,7 @@ export default function SongCard({song}) {
     const handleVolumeChange = (e) => {
         const newVolume = parseFloat(e.target.value)
         setVolume(newVolume)
-        audioRef.current.volume = newVolume
+        songRef.current.volume = newVolume
     }
 
     return (
