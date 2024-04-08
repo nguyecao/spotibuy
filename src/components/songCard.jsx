@@ -129,6 +129,7 @@ export default function SongCard({song, currentSong, setCurrentSong, songRef}) {
     const [volume, setVolume] = useState(0.15)
     const [hover, setHover] = useState(false)
     let timeout
+    const item = cart.find(i => i.id === song.id)
 
     const onHover = () => {
         timeout = setTimeout(() => {setHover(true)}, 250) // delay no preview message
@@ -167,7 +168,7 @@ export default function SongCard({song, currentSong, setCurrentSong, songRef}) {
 
     // adds song to cart
     const handleAddToCart = () => {
-        const item = cart.find(i => i.id === song.id)
+        // const item = cart.find(i => i.id === song.id)
         if (!item) {
             dispatch(addToCart(song))
         }
@@ -221,7 +222,10 @@ export default function SongCard({song, currentSong, setCurrentSong, songRef}) {
                 <IoVolumeMediumOutline size={30} className='volumeIcon'/>
                 <input type='range' min='0' max='1' step='0.01' value={volume} onChange={handleVolumeChange}/>
             </div>
-            <button className='addToCartBtn' onClick={handleAddToCart}>Add to Cart</button>
+            { item ?
+                <button className='addToCartBtn' onClick={handleAddToCart}>In Cart</button> :
+                <button className='addToCartBtn' onClick={handleAddToCart}>Add to Cart</button>
+            }
         </SongCardContainer>
     )
 }

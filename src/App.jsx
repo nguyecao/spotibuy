@@ -115,3 +115,10 @@ function App({ children }) {
 }
 
 export default App
+
+export function converTime(ms) {
+    let millis = parseFloat(ms)
+    let minutes = Math.floor(millis / 60000)
+    let seconds = ((millis % 60000) / 1000).toFixed(0)
+    return minutes + ":" + (seconds < 10 ? '0' : '') + seconds
+}

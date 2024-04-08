@@ -21,10 +21,10 @@ const CartContainer = styled.div`
 export default function Cart() {
     return (
         <CartContainer>
-            <div className='cartListContainer'>
+            <div className='cartListContainer'> {/* div for styling purposes */}
                 <CartList/>
             </div>
-            <div className='orderSummaryContainer'>
+            <div className='orderSummaryContainer'> {/* div for styling purposes */}
                 <OrderSummary/>
             </div>
         </CartContainer>

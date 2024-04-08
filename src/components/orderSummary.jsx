@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { MdCheckBoxOutlineBlank } from "react-icons/md"
 import { MdOutlineCheckBox } from "react-icons/md"
+import { converTime } from "../App";
 
 const OrderSummaryContainer = styled.div`
     background-color: #212121;
@@ -61,12 +62,6 @@ export default function OrderSummary() {
     const cartItems = useSelector(selectCart)
     const [totalTime, setTotalTime] = useState(0)
     const [acknowledge, setAcknowledge] = useState(false)
-    function converTime(ms) {
-        let millis = parseFloat(ms)
-        let minutes = Math.floor(millis / 60000)
-        let seconds = ((millis % 60000) / 1000).toFixed(0)
-        return minutes + ":" + (seconds < 10 ? '0' : '') + seconds
-    }
 
     useEffect(() => {
         let time = 0

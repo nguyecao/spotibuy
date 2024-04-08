@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 import { useDispatch } from 'react-redux'
 import { removeFromCart } from '../redux.js/cartSlice'
+import { converTime } from '../App'
 
 const CartItemContainer = styled.div`
     display: flex;
@@ -38,12 +39,7 @@ const CartItemContainer = styled.div`
 export default function CartItem(item) {
     const dispatch = useDispatch()
     const song = item.item
-    function converTime(ms) {
-        let millis = parseFloat(ms)
-        let minutes = Math.floor(millis / 60000)
-        let seconds = ((millis % 60000) / 1000).toFixed(0)
-        return minutes + ":" + (seconds < 10 ? '0' : '') + seconds
-    }
+
     return (
         <CartItemContainer>
             <div className='imgContainer'>

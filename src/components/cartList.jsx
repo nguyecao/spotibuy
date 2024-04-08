@@ -3,6 +3,7 @@ import { useSelector } from "react-redux"
 import { selectCart } from "../redux.js/cartSlice";
 import styled from "@emotion/styled";
 import { useState, useEffect } from "react";
+import { converTime } from "../App";
 
 const CartListContainer = styled.div`
     display: flex;
@@ -35,14 +36,6 @@ export default function CartList() {
     const [totalTime, setTotalTime] = useState(0)
     const cartItems = useSelector(selectCart)
     const itemCount = cartItems.length === 1 ? '1 item' : cartItems.length + ' items'
-
-    function converTime(ms) {
-        let millis = parseFloat(ms)
-        let minutes = Math.floor(millis / 60000)
-        let seconds = ((millis % 60000) / 1000).toFixed(0)
-        return minutes + ":" + (seconds < 10 ? '0' : '') + seconds
-    }
-
     useEffect(() => {
         let time = 0
         cartItems.forEach(song => {
