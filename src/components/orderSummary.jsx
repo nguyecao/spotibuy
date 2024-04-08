@@ -62,14 +62,14 @@ export default function OrderSummary() {
     const [totalTime, setTotalTime] = useState(0)
     const [acknowledge, setAcknowledge] = useState(false)
     function converTime(ms) {
-        var millis = parseFloat(ms)
-        var minutes = Math.floor(millis / 60000)
-        var seconds = ((millis % 60000) / 1000).toFixed(0)
+        let millis = parseFloat(ms)
+        let minutes = Math.floor(millis / 60000)
+        let seconds = ((millis % 60000) / 1000).toFixed(0)
         return minutes + ":" + (seconds < 10 ? '0' : '') + seconds
     }
 
     useEffect(() => {
-        var time = 0
+        let time = 0
         cartItems.forEach(song => {
             time += song.duration_ms
         })

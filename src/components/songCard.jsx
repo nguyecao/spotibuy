@@ -119,7 +119,7 @@ const SongCardContainer = styled.div`
         100% { opacity: 1; }
     }
 `
-// parent element need to pass:
+// parent element needs to pass:
 //      const songRef = useRef(new Audio())
 //      const [currentSong, setCurrentSong] = useState(null)
 export default function SongCard({song, currentSong, setCurrentSong, songRef}) {
@@ -131,7 +131,7 @@ export default function SongCard({song, currentSong, setCurrentSong, songRef}) {
     let timeout
 
     const onHover = () => {
-        timeout = setTimeout(() => {setHover(true)}, 250)
+        timeout = setTimeout(() => {setHover(true)}, 250) // delay no preview message
     }
     const onLeave = () => {
         setHover(false)
@@ -149,7 +149,6 @@ export default function SongCard({song, currentSong, setCurrentSong, songRef}) {
         const handleAudioEnded = () => {
             setIsPlaying(false)
         }
-        // stops audio when song card disappears
         songRef.current.addEventListener('ended', handleAudioEnded)
         return () => {
             songRef.current.removeEventListener('ended', handleAudioEnded)

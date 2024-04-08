@@ -1,9 +1,9 @@
 import styled from "@emotion/styled"
-import { useState, useEffect, useRef } from "react"
+import { useState, useRef } from "react"
 import { IoIosSearch } from "react-icons/io"
 import SongCard from "./songCard"
-import { useDispatch, useSelector } from "react-redux"
-import { selectToken, setToken } from "../redux.js/tokenSlice"
+import { useSelector } from "react-redux"
+import { selectToken } from "../redux.js/tokenSlice"
 import axios from "axios"
 
 const SearchContainer = styled.div`
@@ -43,8 +43,9 @@ export default function Search() {
     const [searchInput, setSearchInput] = useState(null)
     const [searchResults, setSearchResults] = useState([])
 
-    const songRef = useRef(new Audio())                     // required prop for SongCard
-    const [currentSong, setCurrentSong] = useState(null)    // required prop for SongCard
+    // required props for SongCard
+    const songRef = useRef(new Audio()) // audio source
+    const [currentSong, setCurrentSong] = useState(null) // current song in audio source
 
     const token = useSelector(selectToken)
 
