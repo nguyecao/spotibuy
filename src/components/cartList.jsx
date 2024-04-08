@@ -8,7 +8,6 @@ const CartListContainer = styled.div`
     display: flex;
     flex-direction: column;
     background-color: #212121;
-    width: 1200px;
     margin-right: 10px;
     padding: 20px;
     ul {

@@ -7,7 +7,7 @@ import { MdOutlineCheckBox } from "react-icons/md"
 
 const OrderSummaryContainer = styled.div`
     background-color: #212121;
-    width: 430px;
+    width: 360px;
     form {
         display: flex;
         flex-direction: column;

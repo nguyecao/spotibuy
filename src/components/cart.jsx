@@ -4,20 +4,27 @@ import CartList from "./cartList";
 
 const CartContainer = styled.div`
     display: flex;
+    padding: 20px;
+    width: 100%;
+    justify-content: center;
     .line {
         height: 1px;
         background-color: white;
     }
-    margin: auto;
+    .cartListContainer {
+        max-width: 1000px;
+        min-width: 500px;
+        width: 100%;
+    }
 `
 
 export default function Cart() {
     return (
         <CartContainer>
-            <div>
+            <div className='cartListContainer'>
                 <CartList/>
             </div>
-            <div>
+            <div className='orderSummaryContainer'>
                 <OrderSummary/>
             </div>
         </CartContainer>
