@@ -9,4 +9,9 @@ export default defineConfig({
             plugins: [ "@emotion/babel-plugin" ]
         }
     })],
+    server: {
+        proxy: {
+            '/api': 'http://localhost:8000'
+        }
+    }
 })

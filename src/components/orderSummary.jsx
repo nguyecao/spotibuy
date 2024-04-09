@@ -77,6 +77,7 @@ export default function OrderSummary() {
                 e.preventDefault()
                 if (acknowledge && cartItems.length > 0) {
                     dispatch(clearCart())
+                    setAcknowledge(false)
                 }
             }}>
                 <h3>Order Summary</h3>

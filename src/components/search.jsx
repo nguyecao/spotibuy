@@ -72,6 +72,7 @@ export default function Search() {
                 <form onSubmit={e => {
                     e.preventDefault()
                     handleSearch()
+                    console.log(token)
                 }}>
                     <IoIosSearch className='search-icon' size={25}/>
                     <input id='search' type='text' onChange={(e) => {
@@ -79,13 +80,18 @@ export default function Search() {
                     }}/>
                 </form>
             </div>
-            <ul>
-                {searchResults.length !== 0 && searchResults.map(song => (
-                    <li key={song.id}>
-                        <SongCard song={song} currentSong={currentSong} setCurrentSong={setCurrentSong} songRef={songRef}/>
-                    </li>
-                ))}
-            </ul>
+            {
+                token ?
+                <ul>
+                    {searchResults.length !== 0 && searchResults.map(song => (
+                        <li key={song.id}>
+                            <SongCard song={song} currentSong={currentSong} setCurrentSong={setCurrentSong} songRef={songRef}/>
+                        </li>
+                    ))}
+                </ul>
+                :
+                <p>Please log in to your Spotify account.</p>
+            }
         </SearchContainer>
     )
 }

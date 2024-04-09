@@ -7,6 +7,7 @@ import { useSelector } from "react-redux"
 import { selectCart } from "../redux.js/cartSlice"
 import { useEffect, useState } from "react"
 import { IoMdPause } from "react-icons/io"
+import { removeFromCart } from "../redux.js/cartSlice"
 
 const SongCardContainer = styled.div`
     margin: 4px;
@@ -118,6 +119,9 @@ const SongCardContainer = styled.div`
         0% { opacity: 0; }
         100% { opacity: 1; }
     }
+    .inCart {
+        background-color: #1db954;
+    }
 `
 // parent element needs to pass:
 //      const songRef = useRef(new Audio())
@@ -171,6 +175,8 @@ export default function SongCard({song, currentSong, setCurrentSong, songRef}) {
         // const item = cart.find(i => i.id === song.id)
         if (!item) {
             dispatch(addToCart(song))
+        } else {
+            dispatch(removeFromCart(song.id))
         }
     }
 
@@ -180,7 +186,6 @@ export default function SongCard({song, currentSong, setCurrentSong, songRef}) {
             if (song.id !== currentSong) {
                 setCurrentSong(song.id)
                 songRef.current.src = song.preview_url
-                console.log('setting new song ref')
             }
             if (songRef.current.paused) {
                 setIsPlaying(true)
@@ -222,10 +227,7 @@ export default function SongCard({song, currentSong, setCurrentSong, songRef}) {
                 <IoVolumeMediumOutline size={30} className='volumeIcon'/>
                 <input type='range' min='0' max='1' step='0.01' value={volume} onChange={handleVolumeChange}/>
             </div>
-            { item ?
-                <button className='addToCartBtn' onClick={handleAddToCart}>In Cart</button> :
-                <button className='addToCartBtn' onClick={handleAddToCart}>Add to Cart</button>
-            }
+            <button className={'addToCartBtn ' + (item && 'inCart')} onClick={handleAddToCart}>{item ? 'In Cart' : 'Add to Cart'}</button>
         </SongCardContainer>
     )
 }
