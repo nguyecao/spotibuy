@@ -4,6 +4,10 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import { useDispatch } from 'react-redux'
 import { setToken } from "../redux.js/tokenSlice"
+import { selectToken } from "../redux.js/tokenSlice"
+import { useSelector } from "react-redux"
+import { selectProfile } from "../redux.js/profileSlice"
+import { setProfile } from "../redux.js/profileSlice"
 
 const HomeContainer = styled.form`
     background-color: #212121;
@@ -31,8 +35,7 @@ export default function Home() {
     const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID
     const CLIENT_SECRET = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET
     const REDIRECT_URL = import.meta.env.VITE_OAUTH_REDIRECT_URL
-    const SCOPE = 'user-read-private user-read-email'
-    // const [accessToken, setAccessToken] = useState(null)
+    const SCOPE = 'user-read-private user-read-email user-top-read'
 
     const dispatch = useDispatch()
 
@@ -60,9 +63,6 @@ export default function Home() {
                 console.error('== Error exchanging code for token')
             } else {
                 const body = await res.json()
-                // console.log('body:', body)
-                // console.log('access_token:', body.body.access_token)
-                // setAccessToken(body.body.access_token)
                 dispatch(setToken(body.body.access_token))
             }
         }
@@ -71,18 +71,34 @@ export default function Home() {
         }
     }, [code])
 
-    // useEffect(() => {
-    //     if (accessToken) {
-    //         dispatch(setToken(accessToken))
-    //     }
-    // }, [accessToken])
+    const accessToken = useSelector(selectToken)
+    useEffect(() => {
+        async function getProfile() {
+            const response = await fetch('https://api.spotify.com/v1/me', {
+                headers: {
+                    Authorization: 'Bearer ' + accessToken
+                }
+            })
+            const data = await response.json()
+            dispatch(setProfile(data))
+        }
+        if (accessToken) {
+            getProfile()
+        }
+    },[accessToken])
+
+    const loggedIn = useSelector(selectProfile) !== null
 
     return (
-        <HomeContainer onSubmit={e => {
-            e.preventDefault()
-        }}>
-            <h2>Please sign into your Spotify account</h2>
-            <button type='submit'><a href={link} className='loginText'>Log In</a></button>
+        <HomeContainer>
+            { loggedIn ?
+                    <p>Logged In</p>
+                :
+                <>
+                    <p>Please sign into your Spotify account</p>
+                    <a href={link} className='loginText'>Log In</a>
+                </>
+            }
         </HomeContainer>
     )
 }

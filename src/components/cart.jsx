@@ -4,7 +4,6 @@ import CartList from "./cartList";
 
 const CartContainer = styled.div`
     display: flex;
-    padding: 20px;
     width: 100%;
     justify-content: center;
     .line {
