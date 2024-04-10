@@ -8,6 +8,7 @@ import axios from 'axios'
 import { useSelector } from 'react-redux'
 import { selectCart } from './redux.js/cartSlice'
 import { selectProfile } from './redux.js/profileSlice'
+import Login from './components/login'
 
 const AppContainer = styled.div`
     nav {
@@ -19,7 +20,6 @@ const AppContainer = styled.div`
     }
     h1 {
         margin-right: auto;
-        cursor: pointer;
     }
     ul {
         display: flex;
@@ -72,6 +72,7 @@ const AppContainer = styled.div`
     }
     #name {
         display: flex;
+        cursor: default;
     }
     #name > * {
         margin: auto;
@@ -113,33 +114,39 @@ function App({ children }) {
     const profilePic = profile ? profile.images[0].url : null
     return (
         <AppContainer>
-            <nav>
-                <h1>
-                    <NavLink to={'/'} id='name'>
-                        <img className='logo' src='https://cdn.freebiesupply.com/logos/large/2x/spotify-2-logo-png-transparent.png'/>
-                        <p className='nameText'>Spotibuy</p>
+            {profile ?
+            <>
+                <nav>
+                    <h1>
+                        <a id='name'>
+                            {/* <img className='logo' src='https://cdn.freebiesupply.com/logos/large/2x/spotify-2-logo-png-transparent.png'/> */}
+                            <p className='nameText'>Spotibuy</p>
+                        </a>
+                    </h1>
+                    <NavLink className='cart' to={'/cart'}>
+                        <TiShoppingCart size={40} color='white'/>
+                        <div className={'cartNumber count' + cartItems.length}>{cartItems.length}</div>
                     </NavLink>
-                </h1>
-                <NavLink className='cart' to={'/cart'}>
-                    <TiShoppingCart size={40} color='white'/>
-                    <div className={'cartNumber count' + cartItems.length}>{cartItems.length}</div>
-                </NavLink>
-            </nav>
-            <ul className='tabs'>
-                <li><NavLink className='tab' to={'/recommended'}>Recommended</NavLink></li>
-                <li><NavLink className='tab' to={'/search'}>Search</NavLink></li>
-                <li><NavLink className='tab' to={'/about-us'}>About Us</NavLink></li>
-                {profile &&
-                    <li>
-                        <NavLink className='tab profileTab' to={'/profile'}>
-                            <div className='profilePicContainer'><img className='profilePic' src={profilePic}/></div>
-                        </NavLink>
-                    </li>
-                }
-            </ul>
-            <main>
-                { children || <Outlet/> }
-            </main>
+                </nav>
+                <ul className='tabs'>
+                    <li><NavLink className='tab' to={'/'}>Recommended</NavLink></li>
+                    <li><NavLink className='tab' to={'/search'}>Search</NavLink></li>
+                    <li><NavLink className='tab' to={'/about-us'}>About Us</NavLink></li>
+                    {profile &&
+                        <li>
+                            <NavLink className='tab profileTab' to={'/profile'}>
+                                <div className='profilePicContainer'><img className='profilePic' src={profilePic}/></div>
+                            </NavLink>
+                        </li>
+                    }
+                </ul>
+                <main>
+                    { children || <Outlet/> }
+                </main>
+            </>
+            :
+            <Login/>
+            }
         </AppContainer>
     )
 }

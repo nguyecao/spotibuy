@@ -80,18 +80,13 @@ export default function Search() {
                     }}/>
                 </form>
             </div>
-            {
-                token ?
-                <ul>
-                    {searchResults.length !== 0 && searchResults.map(song => (
-                        <li key={song.id}>
-                            <SongCard song={song} currentSong={currentSong} setCurrentSong={setCurrentSong} songRef={songRef}/>
-                        </li>
-                    ))}
-                </ul>
-                :
-                <p>Please log in to your Spotify account.</p>
-            }
+            <ul>
+                {searchResults.length !== 0 && searchResults.map(song => (
+                    <li key={song.id}>
+                        <SongCard song={song} currentSong={currentSong} setCurrentSong={setCurrentSong} songRef={songRef}/>
+                    </li>
+                ))}
+            </ul>
         </SearchContainer>
     )
 }
