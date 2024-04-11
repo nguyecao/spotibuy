@@ -11,8 +11,12 @@ How to run:
 
 TODO:
 
-- implement checkout button
-- display top songs and artists in profile
-- generate recs based on top songs and artists
-- display recs in recommended page
+- implement successful checkout page
+- style profile page
 - randomize top items in recommended page
+- implement about page
+- animate reload icon
+- limit cart to 100 items
+- disable 'Add to cart' button and display message when cart is full
+- style whole app (gradient, margins, hover effects)
+- make search not look empty and boring before search (implement search suggestions?)

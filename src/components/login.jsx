@@ -46,7 +46,7 @@ export default function Login() {
     const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID
     const CLIENT_SECRET = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET
     const REDIRECT_URL = import.meta.env.VITE_OAUTH_REDIRECT_URL
-    const SCOPE = 'user-read-private user-read-email user-top-read'
+    const SCOPE = 'user-read-private user-read-email user-top-read playlist-modify-public playlist-modify-private'
 
     const dispatch = useDispatch()
 

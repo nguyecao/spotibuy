@@ -46,6 +46,7 @@ const ProfileContainer = styled.div`
     }
     .topItemsContainer {
         display: flex;
+        flex-wrap: wrap;
     }
 `
 

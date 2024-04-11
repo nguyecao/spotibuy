@@ -5,6 +5,9 @@ import { useEffect, useState } from "react";
 import { MdCheckBoxOutlineBlank } from "react-icons/md"
 import { MdOutlineCheckBox } from "react-icons/md"
 import { converTime } from "../App";
+import axios from 'axios'
+import { selectProfile } from "../redux.js/profileSlice";
+import { selectToken } from "../redux.js/tokenSlice";
 
 const OrderSummaryContainer = styled.div`
     background-color: #212121;
@@ -59,9 +62,11 @@ const OrderSummaryContainer = styled.div`
 
 export default function OrderSummary() {
     const dispatch = useDispatch()
+    const token = useSelector(selectToken)
     const cartItems = useSelector(selectCart)
     const [totalTime, setTotalTime] = useState(0)
     const [acknowledge, setAcknowledge] = useState(false)
+    const userId = useSelector(selectProfile).id
 
     useEffect(() => {
         let time = 0
@@ -71,6 +76,40 @@ export default function OrderSummary() {
         setTotalTime(time)
     }, [cartItems.length])
 
+    function checkoutPlaylist() {
+        const playlistData = {
+            name: 'Spoitbuy Playlist',
+            description: 'Created on Spotibuy',
+            public: true
+        }
+        axios.post(`https://api.spotify.com/v1/users/${userId}/playlists`, playlistData, {
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                const playlistId = response.data.id
+                const uris = cartItems.map(item => item.uri)
+
+                axios.post(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?uris=${uris.join(',')}`, null, {
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(response => {
+                        console.log('id for new playlist:',response.data)
+                    })
+                    .catch(error => {
+                        console.error(error)
+                    })
+            })
+            .catch(error => {
+                console.error(error)
+            })
+    }
+
     return (
         <OrderSummaryContainer>
             <form onSubmit={ e => {
@@ -78,6 +117,7 @@ export default function OrderSummary() {
                 if (acknowledge && cartItems.length > 0) {
                     dispatch(clearCart())
                     setAcknowledge(false)
+                    checkoutPlaylist()
                 }
             }}>
                 <h3>Order Summary</h3>
@@ -93,7 +133,7 @@ export default function OrderSummary() {
                             <MdCheckBoxOutlineBlank size={30} className='checkBox'/> :
                             <MdOutlineCheckBox size={30} className='checkBox'/>
                         }
-                        <p>I understand that checking out will add a new playlist to my Spotify account.</p>
+                        <p>I understand that checking out will add a new public playlist to my Spotify account.</p>
                     </label>
                 </div>
                 <button type='submit' className={(acknowledge && cartItems.length > 0) ? 'acknowledged' : 'notAcknowledged'}>Check Out</button>

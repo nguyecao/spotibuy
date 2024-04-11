@@ -43,7 +43,7 @@ export default function Search() {
     const [searchInput, setSearchInput] = useState(null)
     const [searchResults, setSearchResults] = useState([])
 
-    // required props for SongCard
+    // required props for SongCard:
     const songRef = useRef(new Audio()) // audio source
     const [currentSong, setCurrentSong] = useState(null) // current song in audio source
 

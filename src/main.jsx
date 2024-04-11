@@ -10,15 +10,17 @@ import Profile from './components/profile.jsx'
 import Cart from './components/cart.jsx'
 import { Provider } from 'react-redux'
 import store from './redux.js/store.js'
+import ErrorPage from './components/errorPage.jsx'
 
 const router = createBrowserRouter([
     {
         path: '/',
         element: <App/>,
+        errorElement: <App><ErrorPage/></App>,
         children: [
             { path: '/recommended', element: <Recommended/> },
             { path: '/search', element: <Search/> },
-            { path: '/about-us', element: <AboutUs/> },
+            { path: '/about', element: <AboutUs/> },
             { index: true, element: <Profile/> },
             { path: '/cart', element: <Cart/> },
         ]

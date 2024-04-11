@@ -130,7 +130,7 @@ function App({ children }) {
                 <ul className='tabs'>
                     <li><NavLink className='tab' to={'/recommended'}>Recommended</NavLink></li>
                     <li><NavLink className='tab' to={'/search'}>Search</NavLink></li>
-                    <li><NavLink className='tab' to={'/about-us'}>About Us</NavLink></li>
+                    <li><NavLink className='tab' to={'/about'}>About</NavLink></li>
                     {profile &&
                         <li className='profile'>
                             <NavLink className='tab profileTab' to={'/'}>
