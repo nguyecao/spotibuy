@@ -27,7 +27,6 @@ const AppContainer = styled.div`
         padding: 0;
     }
     .tabs {
-        padding-left: 20px;
         padding-right: 10px;
     }
     a {
@@ -48,11 +47,6 @@ const AppContainer = styled.div`
     }
     #name {
         color: #1db954;
-    }
-    main {
-        display: flex;
-        padding-left: 20px;
-        padding-right: 20px;
     }
     .cartNumber {
         background-color: #1db954;
@@ -111,7 +105,7 @@ function App({ children }) {
     const dispatch = useDispatch()
     const cartItems = useSelector(selectCart)
     const profile = useSelector(selectProfile)
-    const profilePic = profile ? profile.images[0].url : null
+    const profilePic = profile ? profile.images[1].url : null
     return (
         <AppContainer>
             {profile ?
@@ -129,12 +123,12 @@ function App({ children }) {
                     </NavLink>
                 </nav>
                 <ul className='tabs'>
-                    <li><NavLink className='tab' to={'/'}>Recommended</NavLink></li>
+                    <li><NavLink className='tab' to={'/recommended'}>Recommended</NavLink></li>
                     <li><NavLink className='tab' to={'/search'}>Search</NavLink></li>
                     <li><NavLink className='tab' to={'/about-us'}>About Us</NavLink></li>
                     {profile &&
-                        <li>
-                            <NavLink className='tab profileTab' to={'/profile'}>
+                        <li className='profile'>
+                            <NavLink className='tab profileTab' to={'/'}>
                                 <div className='profilePicContainer'><img className='profilePic' src={profilePic}/></div>
                             </NavLink>
                         </li>

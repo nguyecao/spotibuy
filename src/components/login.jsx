@@ -8,6 +8,8 @@ import { selectToken } from "../redux.js/tokenSlice"
 import { useSelector } from "react-redux"
 import { selectProfile } from "../redux.js/profileSlice"
 import { setProfile } from "../redux.js/profileSlice"
+import { setTopArtists } from "../redux.js/topItemsSlice"
+import { setTopSongs } from "../redux.js/topItemsSlice"
 
 const LoginContainer = styled.div`
     background-color: #1DB954;
@@ -83,8 +85,38 @@ export default function Login() {
             const data = await response.json()
             dispatch(setProfile(data))
         }
+        async function getTopSongs() {
+            const url = 'https://api.spotify.com/v1/me/top/tracks?limit=50'
+            axios.get(url, {
+                headers: {
+                    Authorization: 'Bearer ' + accessToken
+                }
+            })
+                .then(response => {
+                    dispatch(setTopSongs(response.data.items))
+                })
+                .error(error => {
+                    console.log(error)
+                })
+        }
+        async function getTopArtists() {
+            const url = 'https://api.spotify.com/v1/me/top/artists?limit=50'
+            axios.get(url, {
+                headers: {
+                    Authorization: 'Bearer ' + accessToken
+                }
+            })
+                .then(response => {
+                    dispatch(setTopArtists(response.data.items))
+                })
+                .error(error => {
+                    console.log(error)
+                })
+        }
         if (accessToken) {
             getProfile()
+            getTopSongs()
+            getTopArtists()
         }
     },[accessToken])
     return(
