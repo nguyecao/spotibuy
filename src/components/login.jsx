@@ -105,7 +105,7 @@ export default function Login() {
                         dispatch(setTopSongs(response.data.items))
                     })
                     .error(error => {
-                        console.log(error)
+                        console.error(error)
                     })
             }
             async function getTopArtists() {
@@ -119,7 +119,7 @@ export default function Login() {
                         dispatch(setTopArtists(response.data.items))
                     })
                     .error(error => {
-                        console.log(error)
+                        console.error(error)
                     })
             }
             if (accessToken) {

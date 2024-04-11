@@ -15,3 +15,4 @@ TODO:
 - display top songs and artists in profile
 - generate recs based on top songs and artists
 - display recs in recommended page
+- randomize top items in recommended page

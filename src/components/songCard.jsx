@@ -45,14 +45,15 @@ const SongCardContainer = styled.div`
     }
     .playIcon {
         margin: auto;
-        padding-left: 2px;
+        padding-left: 3px;
         color: #212121;
+        padding-right: 1px;
     }
     .pauseIcon {
         margin: auto;
         color: #212121;
-        padding-right: 1px;
-        padding-left: 1px;
+        padding-right: 2px;
+        padding-left: 2px;
     }
     .volumeIcon {
         margin: auto;

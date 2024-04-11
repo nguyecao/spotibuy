@@ -6,11 +6,27 @@ import { useEffect, useState } from "react"
 import { selectTopItems } from "../redux.js/topItemsSlice"
 import axios from 'axios'
 import { useRef } from "react"
+import ArtistBubble from "./artistBubble"
+import { IoRefresh } from "react-icons/io5"
 
 const RecommendedContainer = styled.div`
     ul {
         display:flex;
         flex-wrap: wrap;
+    }
+    .refreshBtnContainer {
+        background: none;
+        border: none;
+        margin-top: 7px;
+        margin-left: 10px;
+    }
+    .refreshIcon {
+        color: #535353;
+        cursor: pointer;
+    }
+    .recCategory {
+        display: flex;
+        text-align: center;
     }
 `
 
@@ -23,12 +39,7 @@ export default function Recommended() {
     const [recTracks, setRecTracks] = useState([])
     const [recArtists, setRecArtists] = useState([])
     const [refreshSongsClicks, SetRefreshSongsClicks] = useState(0)
-
-    async function getRecTracks() {
-    }
-
-    async function getRecArtists() {
-    }
+    const [refreshArtistsClicks, SetRefreshArtistsClicks] = useState(0)
 
     useEffect(() => {
         const topSongIdsString = `${topSongIds[(refreshSongsClicks * 5) % topSongIds.length]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 1]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 2]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 3]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 4]}`
@@ -42,20 +53,55 @@ export default function Recommended() {
                 setRecTracks(response.data.tracks)
             })
             .catch(error => {
-                console.log(error)
+                console.error(error)
             })
     },[refreshSongsClicks])
+
+    useEffect(() => {
+        const topArtistId = topArtistIds[refreshArtistsClicks % topArtistIds.length]
+        const url = `https://api.spotify.com/v1/artists/${topArtistId}/related-artists`
+        axios.get(url, {
+            headers: {
+                Authorization: 'Bearer ' + token
+            }
+        })
+            .then(response => {
+                setRecArtists(response.data.artists)
+            })
+            .catch(error => {
+                console.error(error)
+            })
+    }, [refreshArtistsClicks])
 
     const handleRefreshSongs = () => {
         SetRefreshSongsClicks(refreshSongsClicks + 1)
     }
 
+    const handleRefreshArtists = () => {
+        SetRefreshArtistsClicks(refreshArtistsClicks + 1)
+    }
+
     return (
         <RecommendedContainer>
-            <h2>Recommended Artists</h2>
-            <button>Refresh</button>
-            <h2>Recommended Songs</h2>
-            <button onClick={handleRefreshSongs}>Refresh</button>
+            <div className='recCategory'>
+                <h2>Recommended Artists</h2>
+                <button className='refreshBtnContainer'>
+                    <IoRefresh onClick={handleRefreshArtists} size={20} className='refreshIcon'/>
+                </button>
+            </div>
+            <ul>
+                {recArtists.length !== 0 && recArtists.map(artist => (
+                    <li key={artist.id}>
+                        <ArtistBubble name={artist.name} pictureUrl={artist.images[0].url}/>
+                    </li>
+                ))}
+            </ul>
+            <div className='recCategory'>
+                <h2>Recommended Songs</h2>
+                <button className='refreshBtnContainer'>
+                    <IoRefresh onClick={handleRefreshSongs} size={20} className='refreshIcon'/>
+                </button>
+            </div>
             <ul>
                 {recTracks.length !== 0 && recTracks.map(song => (
                     <li key={song.id}>

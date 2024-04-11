@@ -26,7 +26,7 @@ const ProfileContainer = styled.div`
         font-size: 86px;
         margin-left: 24px;
     }
-    .topArtists, .topSongs {
+    .topArtists, .topSongs, .topGenres {
         display: flex;
         flex-direction: column;
     }
@@ -54,6 +54,14 @@ export default function Profile() {
     const topItems = useSelector(selectTopItems)
     const topSongs = topItems.songs
     const topArtists = topItems.artists
+    const artistGenres = topArtists.map(artist => artist.genres[0]).filter(genre => genre !== undefined)
+    const genreCounts = artistGenres.reduce((acc, genre) => {
+            acc[genre] = (acc[genre] || 0) + 1
+            return acc
+        }, {})
+    const sortedGenres = Object.entries(genreCounts).sort((a, b) => b[1] - a[1])
+    const sortedGenresList = sortedGenres.map(([genre, count]) => genre)
+    const topNumber = 10
 
     return (
         <ProfileContainer>
@@ -69,15 +77,22 @@ export default function Profile() {
                 <ul className='topArtists'>
                     <h2 className='topTitle'>Your Top Artists</h2>
                     <div className='line'/>
-                    {topArtists.map(artist => (
+                    {topArtists.slice(0, topNumber).map(artist => (
                         <li key={artist.id}>{artist.name}</li>
                     ))}
                 </ul>
                 <ul className='topSongs'>
                     <h2 className='topTitle'>Your Top Songs</h2>
                     <div className='line'/>
-                    {topSongs.map(song => (
+                    {topSongs.slice(0, topNumber).map(song => (
                         <li key={song.id}>{song.name}</li>
+                    ))}
+                </ul>
+                <ul className='topGenres'>
+                    <h2 className='topTitle'>Your Top Genres</h2>
+                    <div className='line'/>
+                    {sortedGenresList.slice(0, topNumber).map(genre => (
+                        <li key={genre}>{genre}</li>
                     ))}
                 </ul>
             </div>
