@@ -123,6 +123,24 @@ const SongCardContainer = styled.div`
         background-color: #1db954;
     }
 `
+
+
+{/* EXAMPLE PARENT COMPONENT
+    CSS:
+        ul {
+            display: flex;
+            flex-wrap: wrap;
+        }
+    JSX:
+        <ul>
+            {searchResults.length !== 0 && searchResults.map(song => (
+                <li key={song.id}>
+                    <SongCard song={song} currentSong={currentSong} setCurrentSong={setCurrentSong} songRef={songRef}/>
+                </li>
+            ))}
+        </ul>
+*/}
+
 // parent element needs to pass:
 //      const songRef = useRef(new Audio())
 //      const [currentSong, setCurrentSong] = useState(null)

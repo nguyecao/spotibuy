@@ -10,6 +10,7 @@ import { selectProfile } from "../redux.js/profileSlice"
 import { setProfile } from "../redux.js/profileSlice"
 import { setTopArtists } from "../redux.js/topItemsSlice"
 import { setTopSongs } from "../redux.js/topItemsSlice"
+import { FaSpotify } from "react-icons/fa"
 
 const LoginContainer = styled.div`
     background-color: #1DB954;
@@ -21,7 +22,7 @@ const LoginContainer = styled.div`
     h1 {
         margin: 0; /* Remove default margin */
         color: #212121;
-        font-size: 200px;
+        font-size: 150px;
     }
     .loginBtn {
         padding: 24px;
@@ -31,6 +32,13 @@ const LoginContainer = styled.div`
         padding-bottom: 8px;
         margin-top: 40px;
         font-size: 24px;
+    }
+    .loginLogo {
+        color: #212121;
+        margin-right: 20px;
+    }
+    .loginBanner {
+        display: flex;
     }
 `
 
@@ -76,52 +84,57 @@ export default function Login() {
 
     const accessToken = useSelector(selectToken)
     useEffect(() => {
-        async function getProfile() {
-            const response = await fetch('https://api.spotify.com/v1/me', {
-                headers: {
-                    Authorization: 'Bearer ' + accessToken
-                }
-            })
-            const data = await response.json()
-            dispatch(setProfile(data))
-        }
-        async function getTopSongs() {
-            const url = 'https://api.spotify.com/v1/me/top/tracks?limit=50'
-            axios.get(url, {
-                headers: {
-                    Authorization: 'Bearer ' + accessToken
-                }
-            })
-                .then(response => {
-                    dispatch(setTopSongs(response.data.items))
-                })
-                .error(error => {
-                    console.log(error)
-                })
-        }
-        async function getTopArtists() {
-            const url = 'https://api.spotify.com/v1/me/top/artists?limit=50'
-            axios.get(url, {
-                headers: {
-                    Authorization: 'Bearer ' + accessToken
-                }
-            })
-                .then(response => {
-                    dispatch(setTopArtists(response.data.items))
-                })
-                .error(error => {
-                    console.log(error)
-                })
-        }
         if (accessToken) {
-            getProfile()
-            getTopSongs()
-            getTopArtists()
+            async function getProfile() {
+                const response = await fetch('https://api.spotify.com/v1/me', {
+                    headers: {
+                        Authorization: 'Bearer ' + accessToken
+                    }
+                })
+                const data = await response.json()
+                dispatch(setProfile(data))
+            }
+            async function getTopSongs() {
+                const url = 'https://api.spotify.com/v1/me/top/tracks?limit=50'
+                axios.get(url, {
+                    headers: {
+                        Authorization: 'Bearer ' + accessToken
+                    }
+                })
+                    .then(response => {
+                        dispatch(setTopSongs(response.data.items))
+                    })
+                    .error(error => {
+                        console.log(error)
+                    })
+            }
+            async function getTopArtists() {
+                const url = 'https://api.spotify.com/v1/me/top/artists?limit=50'
+                axios.get(url, {
+                    headers: {
+                        Authorization: 'Bearer ' + accessToken
+                    }
+                })
+                    .then(response => {
+                        dispatch(setTopArtists(response.data.items))
+                    })
+                    .error(error => {
+                        console.log(error)
+                    })
+            }
+            if (accessToken) {
+                getProfile()
+                getTopSongs()
+                getTopArtists()
+            }
         }
     },[accessToken])
     return(
         <LoginContainer>
-            <h1>Spotibuy</h1>
+            <div className='loginBanner'>
+                <FaSpotify size={170} className='loginLogo'/>
+                <h1>Spotibuy</h1>
+            </div>
             <a href={link} className='loginBtn'>Log In</a>
         </LoginContainer>
     )

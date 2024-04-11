@@ -32,7 +32,6 @@ const ProfileContainer = styled.div`
     }
     .profileImg {
         display: inline;
-        margin: 0 auto;
         margin-left: -25%; //centers the image
         height: 100%;
         width: auto;
@@ -47,13 +46,11 @@ const ProfileContainer = styled.div`
     }
     .topItemsContainer {
         display: flex;
-        margin: auto;
     }
 `
 
 export default function Profile() {
     const profile = useSelector(selectProfile)
-    console.log(profile)
     const topItems = useSelector(selectTopItems)
     const topSongs = topItems.songs
     const topArtists = topItems.artists
@@ -61,7 +58,11 @@ export default function Profile() {
     return (
         <ProfileContainer>
             <div className='profileBanner'>
-                <div className='imgContainer'><img className='profileImg' src={profile.images[1].url}/></div>
+                <div>
+                    <div className='imgContainer'>
+                        <img className='profileImg' src={profile.images[1].url}/>
+                    </div>
+                </div>
                 <h1>{profile.display_name}</h1>
             </div>
             <div className='topItemsContainer'>

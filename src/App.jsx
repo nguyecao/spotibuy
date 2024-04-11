@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux'
 import { selectCart } from './redux.js/cartSlice'
 import { selectProfile } from './redux.js/profileSlice'
 import Login from './components/login'
+import { FaSpotify } from "react-icons/fa"
 
 const AppContainer = styled.div`
     nav {
@@ -99,6 +100,9 @@ const AppContainer = styled.div`
         display: flex;
         margin-top: -5px;
     }
+    .spotifyLogo {
+        color: #1db954;
+    }
 `
 
 function App({ children }) {
@@ -114,6 +118,7 @@ function App({ children }) {
                     <h1>
                         <a id='name'>
                             {/* <img className='logo' src='https://cdn.freebiesupply.com/logos/large/2x/spotify-2-logo-png-transparent.png'/> */}
+                            <FaSpotify size={50} className='spotifyLogo'/>
                             <p className='nameText'>Spotibuy</p>
                         </a>
                     </h1>
