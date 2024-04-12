@@ -5,6 +5,8 @@ import SongCard from "./songCard"
 import { useSelector } from "react-redux"
 import { selectToken } from "../redux.js/tokenSlice"
 import axios from "axios"
+import { selectTopItems } from "../redux.js/topItemsSlice"
+import { IoRefresh } from "react-icons/io5"
 
 const SearchContainer = styled.div`
     #search {
@@ -44,15 +46,38 @@ const SearchContainer = styled.div`
         padding-bottom: 4px;
         cursor: pointer;
     }
+    .refreshIcon {
+        color: #535353;
+        transform-origin: calc(50%) calc(57%);
+        animation: spin 500ms linear infinite;
+    }
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+    .refreshBtnContainer {
+        background: none;
+        border: none;
+        margin-top: 7px;
+        margin-left: 10px;
+    }
+    .searchingText {
+        color:#535353;
+    }
 `
 
 export default function Search() {
     const [searchInput, setSearchInput] = useState(null)
     const [searchResults, setSearchResults] = useState([])
     const [suggestedSearches, setSuggestedSearches] = useState([])
+    const [isSearching, setIsSearching] = useState(false)
 
     useEffect(() => {
-        axios.get('https://api.spotify.com/v1/playlists/37i9dQZEVXbMDoHDwVN2tF', {
+        axios.get('https://api.spotify.com/v1/playlists/37i9dQZF1DXcBWIGoYBM5M', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -67,7 +92,7 @@ export default function Search() {
                 const artistCountArray = Object.entries(artistCounts)
                 artistCountArray.sort((a, b) => b[1] - a[1])
                 const sortedArtists = artistCountArray.map(([artist, count]) => artist)
-                setSuggestedSearches(sortedArtists.slice(0,3).concat(trendingSongs.slice(0,3)))
+                setSuggestedSearches(sortedArtists.slice(0,4).concat(trendingSongs.slice(0,4)))
             })
             .catch(error => {
                 console.error(error)
@@ -80,8 +105,9 @@ export default function Search() {
 
     const token = useSelector(selectToken)
 
-    function handleSearch() {
-        const query = searchInput
+    function handleSearch(search) {
+        setIsSearching(true)
+        const query = search
         const type = 'track'
         const url = `https://api.spotify.com/v1/search?q=${query}&type=${type}&limit=50`
         axios.get(url, {
@@ -91,14 +117,15 @@ export default function Search() {
         })
             .then(res => {
                 setSearchResults(res.data.tracks.items)
+                setIsSearching(false)
             })
             .catch(err => {
                 console.error('Error:', err)
+                setIsSearching(false)
             })
     }
-    function handleSuggestionClick(suggestion) {
-        setSearchInput(suggestion)
-        handleSearch()
+    async function handleSuggestionClick(suggestion) {
+        handleSearch(suggestion)
     }
 
     return (
@@ -106,7 +133,7 @@ export default function Search() {
             <div className='formContainer'>
                 <form onSubmit={e => {
                     e.preventDefault()
-                    handleSearch()
+                    handleSearch(searchInput)
                 }}>
                     <IoIosSearch className='search-icon' size={25}/>
                     <input id='search' placeholder='What do you want to listen to?' type='text' onChange={(e) => {
@@ -114,21 +141,24 @@ export default function Search() {
                     }}/>
                 </form>
             </div>
-            <div>
-                <h4>Suggested searches</h4>
-                <ul>
-                    {suggestedSearches.length > 0 &&
-                        suggestedSearches.map((suggestion, idx) => (
-                            <li key={idx} className='tab suggestion' onClick={()=>{handleSuggestionClick(suggestion)}}>{suggestion}</li>
-                    ))}
-                </ul>
-            </div>
+            { suggestedSearches.length > 0 &&
+                <div>
+                    <h4>Suggested Searches</h4>
+                    <ul>
+                        {
+                            suggestedSearches.map((suggestion, idx) => (
+                                <li key={idx} className='tab suggestion' onClick={()=>{handleSuggestionClick(suggestion)}}>{suggestion}</li>
+                        ))}
+                    </ul>
+                </div>
+            }
             <ul>
+                {isSearching && <>
+                    <p className='searchingText'>Searching for songs</p>
+                    <button className='refreshBtnContainer'><IoRefresh size={20} className={'refreshIcon ' + (true ? 'spin' : 'spin')}/></button>
+                </>}
                 {
-                    searchResults.length === 0 && <p>Search for songs</p>
-                }
-                {
-                    searchResults.length !== 0 && searchResults.map(song => (
+                    !isSearching && searchResults.map(song => (
                         <li key={song.id}>
                             <SongCard song={song} currentSong={currentSong} setCurrentSong={setCurrentSong} songRef={songRef}/>
                         </li>

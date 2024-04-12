@@ -41,10 +41,19 @@ const AppContainer = styled.div`
         padding-top: 5px;
         padding-bottom: 5px;
         margin-right: 5px;
+        -webkit-transition: background-color 250ms;
+        -ms-transition: background-color 250ms;
+        transition: background-color 250ms;
+    }
+    .tab:hover {
+        background-color: #313131;
     }
     ul .active {
         background-color: white;
         color: #212121;
+    }
+    .active:hover {
+        background-color: white;
     }
     #name {
         color: #1db954;
@@ -64,6 +73,9 @@ const AppContainer = styled.div`
     }
     .cart {
         display: flex;
+    }
+    .cart:hover {
+        background-color: #212121;
     }
     #name {
         display: flex;

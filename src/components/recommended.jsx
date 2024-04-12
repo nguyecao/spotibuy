@@ -57,7 +57,6 @@ export default function Recommended() {
 
     useEffect(() => {
         setRefreshingSongs(true)
-        // setTimeout(() => {
             const topSongIdsString = `${topSongIds[(refreshSongsClicks * 5) % topSongIds.length]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 1]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 2]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 3]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 4]}`
             const url = 'https://api.spotify.com/v1/recommendations'
             axios.get(`${url}?limit=100&seed_tracks=${topSongIdsString}`, {
@@ -66,14 +65,14 @@ export default function Recommended() {
                 }
             })
                 .then(response => {
-                    setRecTracks(response.data.tracks)
+                    const randomizedTracks = response.data.tracks.sort(() => Math.random() - 0.5)
+                    setRecTracks(randomizedTracks)
                     setRefreshingSongs(false)
                 })
                 .catch(error => {
                     console.error(error)
                     setRefreshingSongs(false)
                 })
-        // }, 500)
     },[refreshSongsClicks])
 
     useEffect(() => {
@@ -86,7 +85,8 @@ export default function Recommended() {
             }
         })
             .then(response => {
-                setRecArtists(response.data.artists)
+                const randomizedArtists = response.data.artists.sort(() => Math.random() - 0.5)
+                setRecArtists(randomizedArtists)
                 setRefreshingArtists(false)
             })
             .catch(error => {
@@ -114,7 +114,7 @@ export default function Recommended() {
             <ul>
                 {recArtists.length !== 0 && recArtists.map(artist => (
                     <li key={artist.id}>
-                        <ArtistBubble name={artist.name} pictureUrl={artist.images[0].url}/>
+                        <ArtistBubble name={artist.name} pictureUrl={artist.images[0].url} genres={artist.genres} url={artist.external_urls}/>
                     </li>
                 ))}
             </ul>
