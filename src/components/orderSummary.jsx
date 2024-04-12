@@ -10,6 +10,8 @@ import { selectProfile } from "../redux.js/profileSlice";
 import { selectToken } from "../redux.js/tokenSlice";
 
 const OrderSummaryContainer = styled.div`
+    /* overflow: hidden;
+    border-radius: 8px; */
     background-color: #212121;
     width: 360px;
     form {

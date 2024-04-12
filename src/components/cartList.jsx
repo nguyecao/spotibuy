@@ -6,6 +6,8 @@ import { useState, useEffect } from "react";
 import { converTime } from "../App";
 
 const CartListContainer = styled.div`
+    /* overflow: hidden;
+    border-radius: 8px; */
     display: flex;
     flex-direction: column;
     background-color: #212121;

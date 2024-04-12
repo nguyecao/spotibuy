@@ -11,6 +11,8 @@ import { removeFromCart } from "../redux.js/cartSlice"
 import { FaRegCheckCircle } from "react-icons/fa"
 
 const SongCardContainer = styled.div`
+    /* overflow: hidden;
+    border-radius: 8px; */
     margin: 4px;
     display: flex;
     flex-direction: column;
@@ -88,6 +90,7 @@ const SongCardContainer = styled.div`
         overflow: hidden;
         white-space: nowrap;
         max-width: 250px;
+        height: 21px;
     }
     .imgContainer {
         display: flex;
@@ -244,8 +247,10 @@ export default function SongCard({song, currentSong, setCurrentSong, songRef}) {
             <div className='imgContainer'>
                 <img src={song.album ? song.album.images[0].url : ''}/>
             </div>
+
             <p className='artist'>{song.artists[0].name}</p>
             <p className='songName'>{song.name}</p>
+
             <div className='controls'>
                 {
                     hover && song.preview_url === null ?
