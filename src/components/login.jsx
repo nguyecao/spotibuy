@@ -104,7 +104,7 @@ export default function Login() {
                     .then(response => {
                         dispatch(setTopSongs(response.data.items))
                     })
-                    .error(error => {
+                    .catch(error => {
                         console.error(error)
                     })
             }
@@ -118,7 +118,7 @@ export default function Login() {
                     .then(response => {
                         dispatch(setTopArtists(response.data.items))
                     })
-                    .error(error => {
+                    .catch(error => {
                         console.error(error)
                     })
             }

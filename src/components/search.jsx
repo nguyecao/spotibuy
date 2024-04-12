@@ -109,7 +109,7 @@ export default function Search() {
                     handleSearch()
                 }}>
                     <IoIosSearch className='search-icon' size={25}/>
-                    <input id='search' placeholder='Search for songs' type='text' onChange={(e) => {
+                    <input id='search' placeholder='What do you want to listen to?' type='text' onChange={(e) => {
                         setSearchInput(e.target.value)
                     }}/>
                 </form>
@@ -124,11 +124,16 @@ export default function Search() {
                 </ul>
             </div>
             <ul>
-                {searchResults.length !== 0 && searchResults.map(song => (
-                    <li key={song.id}>
-                        <SongCard song={song} currentSong={currentSong} setCurrentSong={setCurrentSong} songRef={songRef}/>
-                    </li>
-                ))}
+                {
+                    searchResults.length === 0 && <p>Search for songs</p>
+                }
+                {
+                    searchResults.length !== 0 && searchResults.map(song => (
+                        <li key={song.id}>
+                            <SongCard song={song} currentSong={currentSong} setCurrentSong={setCurrentSong} songRef={songRef}/>
+                        </li>
+                    ))
+                }
             </ul>
         </SearchContainer>
     )
