@@ -90,7 +90,7 @@ const SongCardContainer = styled.div`
         overflow: hidden;
         white-space: nowrap;
         max-width: 250px;
-        height: 21px;
+        height: 21px; // to accomodate japanese text
     }
     .imgContainer {
         display: flex;
