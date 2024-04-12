@@ -72,7 +72,6 @@ export default function Search() {
                 <form onSubmit={e => {
                     e.preventDefault()
                     handleSearch()
-                    console.log(searchResults)
                 }}>
                     <IoIosSearch className='search-icon' size={25}/>
                     <input id='search' type='text' onChange={(e) => {

@@ -5,7 +5,9 @@ const cartSlice = createSlice({
     initialState: [],
     reducers: {
         addToCart(state, action) {
-            state.push(action.payload)
+            if (state.length < 100) {
+                state.push(action.payload)
+            }
         },
         clearCart(state, action) {
             return []

@@ -8,6 +8,7 @@ import { selectCart } from "../redux.js/cartSlice"
 import { useEffect, useState } from "react"
 import { IoMdPause } from "react-icons/io"
 import { removeFromCart } from "../redux.js/cartSlice"
+import { FaRegCheckCircle } from "react-icons/fa"
 
 const SongCardContainer = styled.div`
     margin: 4px;
@@ -68,6 +69,10 @@ const SongCardContainer = styled.div`
     }
     .addToCartBtn:hover {
         background-color: #1db954;
+        color: white;
+    }
+    .addToCartBtn:hover .inCartIcon {
+        color: white;
     }
     p, .controls {
         margin-top: 2px;
@@ -120,8 +125,17 @@ const SongCardContainer = styled.div`
         0% { opacity: 0; }
         100% { opacity: 1; }
     }
-    .inCart {
+    /* .inCart {
         background-color: #1db954;
+    } */
+    .inCartIcon {
+        margin-left: 8px;
+        margin-bottom: -3px;
+        color: #1db954;
+    }
+    .limit:hover {
+        cursor: not-allowed;
+        background-color: #535353;
     }
 `
 
@@ -193,7 +207,9 @@ export default function SongCard({song, currentSong, setCurrentSong, songRef}) {
     const handleAddToCart = () => {
         // const item = cart.find(i => i.id === song.id)
         if (!item) {
-            dispatch(addToCart(song))
+            if (cart.length < 100) {
+                dispatch(addToCart(song))
+            }
         } else {
             dispatch(removeFromCart(song.id))
         }
@@ -246,7 +262,10 @@ export default function SongCard({song, currentSong, setCurrentSong, songRef}) {
                 <IoVolumeMediumOutline size={30} className='volumeIcon'/>
                 <input type='range' min='0' max='1' step='0.01' value={volume} onChange={handleVolumeChange}/>
             </div>
-            <button className={'addToCartBtn ' + (item && 'inCart')} onClick={handleAddToCart}>{item ? 'In Cart' : 'Add to Cart'}</button>
+            <button className={'addToCartBtn ' + (item ? 'inCart' : (cart.length === 100 ? 'limit' : ''))} onClick={handleAddToCart}>
+                { item ? 'Song in Cart' : ( cart.length === 100 ? 'Cart limit reached!' : 'Add to Cart')}
+                {item && <FaRegCheckCircle className='inCartIcon'/>}
+            </button>
         </SongCardContainer>
     )
 }

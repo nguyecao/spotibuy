@@ -23,6 +23,18 @@ const RecommendedContainer = styled.div`
     .refreshIcon {
         color: #535353;
         cursor: pointer;
+        transform-origin: calc(50%) calc(57%)
+    }
+    .spin {
+        animation: spin 500ms linear infinite;
+    }
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
     }
     .recCategory {
         display: flex;
@@ -40,24 +52,32 @@ export default function Recommended() {
     const [recArtists, setRecArtists] = useState([])
     const [refreshSongsClicks, SetRefreshSongsClicks] = useState(0)
     const [refreshArtistsClicks, SetRefreshArtistsClicks] = useState(0)
+    const [refreshingArtists, setRefreshingArtists] = useState(false)
+    const [refreshingSongs, setRefreshingSongs] = useState(false)
 
     useEffect(() => {
-        const topSongIdsString = `${topSongIds[(refreshSongsClicks * 5) % topSongIds.length]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 1]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 2]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 3]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 4]}`
-        const url = 'https://api.spotify.com/v1/recommendations'
-        axios.get(`${url}?limit=100&seed_tracks=${topSongIdsString}`, {
-            headers: {
-                Authorization: 'Bearer ' + token
-            }
-        })
-            .then(response => {
-                setRecTracks(response.data.tracks)
+        setRefreshingSongs(true)
+        // setTimeout(() => {
+            const topSongIdsString = `${topSongIds[(refreshSongsClicks * 5) % topSongIds.length]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 1]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 2]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 3]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 4]}`
+            const url = 'https://api.spotify.com/v1/recommendations'
+            axios.get(`${url}?limit=100&seed_tracks=${topSongIdsString}`, {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
             })
-            .catch(error => {
-                console.error(error)
-            })
+                .then(response => {
+                    setRecTracks(response.data.tracks)
+                    setRefreshingSongs(false)
+                })
+                .catch(error => {
+                    console.error(error)
+                    setRefreshingSongs(false)
+                })
+        // }, 500)
     },[refreshSongsClicks])
 
     useEffect(() => {
+        setRefreshingArtists(true)
         const topArtistId = topArtistIds[refreshArtistsClicks % topArtistIds.length]
         const url = `https://api.spotify.com/v1/artists/${topArtistId}/related-artists`
         axios.get(url, {
@@ -67,9 +87,11 @@ export default function Recommended() {
         })
             .then(response => {
                 setRecArtists(response.data.artists)
+                setRefreshingArtists(false)
             })
             .catch(error => {
                 console.error(error)
+                setRefreshingArtists(false)
             })
     }, [refreshArtistsClicks])
 
@@ -86,7 +108,7 @@ export default function Recommended() {
             <div className='recCategory'>
                 <h2>Recommended Artists</h2>
                 <button className='refreshBtnContainer'>
-                    <IoRefresh onClick={handleRefreshArtists} size={20} className='refreshIcon'/>
+                    <IoRefresh onClick={handleRefreshArtists} size={20} className={'refreshIcon ' + (refreshingArtists ? 'spin' : '')}/>
                 </button>
             </div>
             <ul>
@@ -99,7 +121,7 @@ export default function Recommended() {
             <div className='recCategory'>
                 <h2>Recommended Songs</h2>
                 <button className='refreshBtnContainer'>
-                    <IoRefresh onClick={handleRefreshSongs} size={20} className='refreshIcon'/>
+                    <IoRefresh onClick={handleRefreshSongs} size={20} className={'refreshIcon ' + (refreshingSongs ? 'spin' : '')}/>
                 </button>
             </div>
             <ul>

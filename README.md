@@ -15,7 +15,6 @@ TODO:
 - style profile page
 - randomize top items in recommended page
 - implement about page
-- animate reload icon
 - limit cart to 100 items
 - disable 'Add to cart' button and display message when cart is full
 - style whole app (gradient, margins, hover effects)
