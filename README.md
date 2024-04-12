@@ -15,5 +15,7 @@ TODO:
 - style profile page
 - randomize top items in recommended page
 - implement about page
-- style whole app (gradient, margins, hover effects)
+- styling (gradients, margins, hover effects)
+- implement clicking on artist and song (figure out what to do)
 - make search not look empty and boring before search (implement search suggestions?)
+- get suggested searches with trending playlist (song, artist, and genre) (https://api.spotify.com/v1/playlists/37i9dQZEVXbMDoHDwVN2tF)
