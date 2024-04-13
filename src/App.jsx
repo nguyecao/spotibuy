@@ -86,6 +86,9 @@ const AppContainer = styled.div`
     #name > * {
         margin: auto;
     }
+    #name:hover {
+        background-color: #212121;
+    }
     .logo {
         height: 45px;
     }
@@ -134,12 +137,12 @@ function App({ children }) {
             <>
                 <nav>
                     <h1>
-                        <a id='name'>
+                        <NavLink to={'/recommended'} id='name'>
                             {/* <img className='logo' src='https://cdn.freebiesupply.com/logos/large/2x/spotify-2-logo-png-transparent.png'/> */}
                             {/* <FaSpotify size={50} className='spotifyLogo'/> */}
                             <PiVinylRecord size={50} className='spotifyLogo'/>
                             <p className='nameText'>Spotibuy</p>
-                        </a>
+                        </NavLink>
                     </h1>
                     <NavLink className='cart' to={'/cart'}>
                         <TiShoppingCart size={40} color='white'/>

@@ -12,9 +12,9 @@ const SuccessContainer = styled.div`
     display: flex;
     flex-direction: column;
     background-color: #212121;
-    max-width: 1000px;
+    /* max-width: 1000px;
     min-width: 500px;
-    width: 100%;
+    width: 100%; */
     padding-left: 20px;
     padding-right: 20px;
     margin-top: 20px;
@@ -51,6 +51,9 @@ const SuccessContainer = styled.div`
         margin-left: 5px;
         margin-bottom: -3px;
     }
+    .spotifyAcct {
+        color: #1db954;
+    }
 `
 
 export default function Success({playlistId, orderTotal}) {
@@ -74,11 +77,11 @@ export default function Success({playlistId, orderTotal}) {
     },[])
     return(
         <SuccessContainer>
-            <h1 className='thankYouTitle'>Thank you for shopping on Spotibuy!</h1>
-            <p className='thankYouText'>We've received your order and have delivered it to your Spotify account. We hope you enjoy your purchase and shop with us again soon.</p>
-            <div className='line'/>
-            <div className='orderDetailsContainer'>
-                {playlistData && orderTotal &&
+            {playlistData && <>
+                <h1 className='thankYouTitle'>Thank you for shopping on Spotibuy!</h1>
+                <p className='thankYouText'>We've received your order and delivered it to your <a className='spotifyAcct' href={playlistData.owner.external_urls.spotify} target='_blank'>Spotify account</a>. We hope you enjoy your purchase and shop with us again soon.</p>
+                <div className='line'/>
+                <div className='orderDetailsContainer'>
                     <>
                         <div className='orderDetailsLabel'>
                             <p>Playlist ID:</p>
@@ -86,16 +89,16 @@ export default function Success({playlistId, orderTotal}) {
                             <p>Order Total:</p>
                         </div>
                         <div>
-                            {playlistData && <p>{playlistData.id}</p>}
-                            <p>{playlistData && playlistData.tracks.total + (playlistData.tracks.total === 1 ? ' song' : ' songs')}</p>
+                            {<p>{playlistData.id}</p>}
+                            <p>{playlistData.tracks.total + (playlistData.tracks.total === 1 ? ' song' : ' songs')}</p>
                             <p>{orderTotal}</p>
                         </div>
                     </>
-                }
-            </div>
-            {playlistData && <a href={playlistData.external_urls.spotify} target='_blank' className='viewOrderBtn'>View Order on Spotify<RiSpotifyLine className='viewOrderIcon'/></a>}
-            <div className='line'/>
-            <NavLink to={'/recommended'} className='continueBtn'>Continue Shopping</NavLink>
+                </div>
+                <a href={playlistData.external_urls.spotify} target='_blank' className='viewOrderBtn'>View Order on Spotify<RiSpotifyLine className='viewOrderIcon'/></a>
+                <div className='line'/>
+                <NavLink to={'/recommended'} className='continueBtn'>Continue Shopping</NavLink>
+            </>}
         </SuccessContainer>
     )
 }
