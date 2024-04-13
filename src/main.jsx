@@ -22,7 +22,7 @@ const router = createBrowserRouter([
             { path: '/search', element: <Search/> },
             { path: '/about', element: <About/> },
             { index: true, element: <Profile/> },
-            { path: '/cart', element: <Cart/> },
+            { path: '/cart', element: <Cart/> }
         ]
     }
 ])

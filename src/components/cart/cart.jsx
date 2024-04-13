@@ -1,6 +1,8 @@
 import styled from "@emotion/styled";
 import OrderSummary from "./orderSummary";
 import CartList from "./cartList";
+import Success from "./success";
+import { useState } from "react";
 
 const CartContainer = styled.div`
     display: flex;
@@ -18,14 +20,19 @@ const CartContainer = styled.div`
 `
 
 export default function Cart() {
+    const [newPlaylistId, setNewPlaylistId] = useState(null)
     return (
         <CartContainer>
-            <div className='cartListContainer'> {/* div for styling purposes */}
-                <CartList/>
-            </div>
-            <div className='orderSummaryContainer'> {/* div for styling purposes */}
-                <OrderSummary/>
-            </div>
+            {newPlaylistId ? <Success playlistId={newPlaylistId}/> :
+            <>
+                <div className='cartListContainer'> {/* div for styling purposes */}
+                    <CartList/>
+                </div>
+                <div className='orderSummaryContainer'> {/* div for styling purposes */}
+                    <OrderSummary setNewPlaylistId={setNewPlaylistId}/>
+                </div>
+            </>
+            }
         </CartContainer>
     )
 }

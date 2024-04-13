@@ -62,7 +62,7 @@ const OrderSummaryContainer = styled.div`
     }
 `
 
-export default function OrderSummary() {
+export default function OrderSummary({setNewPlaylistId}) {
     const dispatch = useDispatch()
     const token = useSelector(selectToken)
     const cartItems = useSelector(selectCart)
@@ -100,12 +100,10 @@ export default function OrderSummary() {
                         'Content-Type': 'application/json'
                     }
                 })
-                    .then(response => {
-                        console.log('id for new playlist:',response.data)
-                    })
                     .catch(error => {
                         console.error(error)
                     })
+                setNewPlaylistId(playlistId)
             })
             .catch(error => {
                 console.error(error)
