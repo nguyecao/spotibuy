@@ -6,6 +6,7 @@ import { useSelector } from "react-redux"
 import { selectToken } from "../../redux.js/tokenSlice"
 import styled from "@emotion/styled"
 import { NavLink } from "react-router-dom"
+import { RiSpotifyLine } from "react-icons/ri"
 
 const SuccessContainer = styled.div`
     display: flex;
@@ -44,6 +45,11 @@ const SuccessContainer = styled.div`
     .orderDetailsLabel {
         margin-right: 40px;
         margin-left: 40px;
+        font-weight: bold;
+    }
+    .viewOrderIcon {
+        margin-left: 5px;
+        margin-bottom: -3px;
     }
 `
 
@@ -72,22 +78,22 @@ export default function Success({playlistId, orderTotal}) {
             <p className='thankYouText'>We've received your order and have delivered it to your Spotify account. We hope you enjoy your purchase and shop with us again soon.</p>
             <div className='line'/>
             <div className='orderDetailsContainer'>
-                {playlistData &&
-                <>
-                <div className='orderDetailsLabel'>
-                    <p>Playlist ID:</p>
-                    <p>Songs in Playlist:</p>
-                    <p>Order Total:</p>
-                </div>
-                <div>
-                    {playlistData && <p>{playlistData.id}</p>}
-                    <p>{playlistData && playlistData.tracks.total + (playlistData.tracks.total === 1 ? ' song' : ' songs')}</p>
-                    <p>{orderTotal}</p>
-                </div>
-                </>
+                {playlistData && orderTotal &&
+                    <>
+                        <div className='orderDetailsLabel'>
+                            <p>Playlist ID:</p>
+                            <p>Songs in Playlist:</p>
+                            <p>Order Total:</p>
+                        </div>
+                        <div>
+                            {playlistData && <p>{playlistData.id}</p>}
+                            <p>{playlistData && playlistData.tracks.total + (playlistData.tracks.total === 1 ? ' song' : ' songs')}</p>
+                            <p>{orderTotal}</p>
+                        </div>
+                    </>
                 }
             </div>
-            {playlistData && <a href={playlistData.external_urls.spotify} target='_blank' className='viewOrderBtn'>View Order on Spotify</a>}
+            {playlistData && <a href={playlistData.external_urls.spotify} target='_blank' className='viewOrderBtn'>View Order on Spotify<RiSpotifyLine className='viewOrderIcon'/></a>}
             <div className='line'/>
             <NavLink to={'/recommended'} className='continueBtn'>Continue Shopping</NavLink>
         </SuccessContainer>
