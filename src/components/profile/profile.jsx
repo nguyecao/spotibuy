@@ -1,12 +1,12 @@
 import axios from "axios"
 import { useEffect } from "react"
-import { selectToken } from "../redux.js/tokenSlice"
+import { selectToken } from "../../redux.js/tokenSlice"
 import { useSelector } from "react-redux"
-import { selectProfile } from "../redux.js/profileSlice"
-import { selectTopItems } from "../redux.js/topItemsSlice"
+import { selectProfile } from "../../redux.js/profileSlice"
+import { selectTopItems } from "../../redux.js/topItemsSlice"
 import styled from '@emotion/styled'
 import { useDispatch } from "react-redux"
-import { setTopGenres } from "../redux.js/topItemsSlice"
+import { setTopGenres } from "../../redux.js/topItemsSlice"
 import { useState } from "react"
 
 const ProfileContainer = styled.div`

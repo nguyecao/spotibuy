@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { useDispatch } from 'react-redux'
-import { removeFromCart } from '../redux.js/cartSlice'
-import { converTime } from '../App'
+import { removeFromCart } from '../../redux.js/cartSlice'
+import { converTime } from '../../App'
 
 const CartItemContainer = styled.div`
     display: flex;

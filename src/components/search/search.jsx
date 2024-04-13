@@ -3,9 +3,9 @@ import { useState, useRef, useEffect } from "react"
 import { IoIosSearch } from "react-icons/io"
 import SongCard from "./songCard"
 import { useSelector } from "react-redux"
-import { selectToken } from "../redux.js/tokenSlice"
+import { selectToken } from "../../redux.js/tokenSlice"
 import axios from "axios"
-import { selectTopItems } from "../redux.js/topItemsSlice"
+import { selectTopItems } from "../../redux.js/topItemsSlice"
 import { IoRefresh } from "react-icons/io5"
 
 const SearchContainer = styled.div`

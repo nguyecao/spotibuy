@@ -1,13 +1,13 @@
 import styled from "@emotion/styled"
-import { selectCart, clearCart } from "../redux.js/cartSlice"
+import { selectCart, clearCart } from "../../redux.js/cartSlice"
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { MdCheckBoxOutlineBlank } from "react-icons/md"
 import { MdOutlineCheckBox } from "react-icons/md"
-import { converTime } from "../App";
+import { converTime } from "../../App";
 import axios from 'axios'
-import { selectProfile } from "../redux.js/profileSlice";
-import { selectToken } from "../redux.js/tokenSlice";
+import { selectProfile } from "../../redux.js/profileSlice";
+import { selectToken } from "../../redux.js/tokenSlice";
 
 const OrderSummaryContainer = styled.div`
     /* overflow: hidden;

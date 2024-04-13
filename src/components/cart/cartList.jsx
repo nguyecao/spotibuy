@@ -1,9 +1,9 @@
 import CartItem from "./cartItem";
 import { useSelector } from "react-redux"
-import { selectCart } from "../redux.js/cartSlice";
+import { selectCart } from "../../redux.js/cartSlice";
 import styled from "@emotion/styled";
 import { useState, useEffect } from "react";
-import { converTime } from "../App";
+import { converTime } from "../../App";
 
 const CartListContainer = styled.div`
     /* overflow: hidden;

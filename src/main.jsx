@@ -3,11 +3,11 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import Recommended from './components/recommended.jsx'
-import Search from './components/search.jsx'
-import AboutUs from './components/aboutUs.jsx'
-import Profile from './components/profile.jsx'
-import Cart from './components/cart.jsx'
+import Recommended from './components/recommended/recommended.jsx'
+import Search from './components/search/search.jsx'
+import About from './components/about/about.jsx'
+import Profile from './components/profile/profile.jsx'
+import Cart from './components/cart/cart.jsx'
 import { Provider } from 'react-redux'
 import store from './redux.js/store.js'
 import ErrorPage from './components/errorPage.jsx'
@@ -20,7 +20,7 @@ const router = createBrowserRouter([
         children: [
             { path: '/recommended', element: <Recommended/> },
             { path: '/search', element: <Search/> },
-            { path: '/about', element: <AboutUs/> },
+            { path: '/about', element: <About/> },
             { index: true, element: <Profile/> },
             { path: '/cart', element: <Cart/> },
         ]

@@ -1,13 +1,13 @@
 import styled from "@emotion/styled"
 import { IoMdPlay } from "react-icons/io"
 import { IoVolumeMediumOutline } from "react-icons/io5"
-import { addToCart } from "../redux.js/cartSlice"
+import { addToCart } from "../../redux.js/cartSlice"
 import { useDispatch } from "react-redux"
 import { useSelector } from "react-redux"
-import { selectCart } from "../redux.js/cartSlice"
+import { selectCart } from "../../redux.js/cartSlice"
 import { useEffect, useState } from "react"
 import { IoMdPause } from "react-icons/io"
-import { removeFromCart } from "../redux.js/cartSlice"
+import { removeFromCart } from "../../redux.js/cartSlice"
 import { FaRegCheckCircle } from "react-icons/fa"
 
 const SongCardContainer = styled.div`

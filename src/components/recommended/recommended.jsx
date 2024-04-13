@@ -1,9 +1,9 @@
 import styled from "@emotion/styled"
-import SongCard from "./songCard"
-import { selectToken } from "../redux.js/tokenSlice"
+import SongCard from "../search/songCard"
+import { selectToken } from "../../redux.js/tokenSlice"
 import { useSelector } from "react-redux"
 import { useEffect, useState } from "react"
-import { selectTopItems } from "../redux.js/topItemsSlice"
+import { selectTopItems } from "../../redux.js/topItemsSlice"
 import axios from 'axios'
 import { useRef } from "react"
 import ArtistBubble from "./artistBubble"
