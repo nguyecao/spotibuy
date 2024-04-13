@@ -11,6 +11,7 @@ import { setProfile } from "../redux.js/profileSlice"
 import { setTopArtists } from "../redux.js/topItemsSlice"
 import { setTopSongs } from "../redux.js/topItemsSlice"
 import { FaSpotify } from "react-icons/fa"
+import { PiVinylRecord } from "react-icons/pi"
 
 const LoginContainer = styled.div`
     background-color: #1DB954;
@@ -32,6 +33,12 @@ const LoginContainer = styled.div`
         padding-bottom: 8px;
         margin-top: 40px;
         font-size: 24px;
+        -webkit-transition: background-color 250ms;
+        -ms-transition: background-color 250ms;
+        transition: background-color 250ms;
+    }
+    .loginBtn:hover {
+        background-color: #313131;
     }
     .loginLogo {
         color: #212121;
@@ -132,7 +139,8 @@ export default function Login() {
     return(
         <LoginContainer>
             <div className='loginBanner'>
-                <FaSpotify size={170} className='loginLogo'/>
+                {/* <FaSpotify size={170} className='loginLogo'/> */}
+                <PiVinylRecord size={170} className='loginLogo'/>
                 <h1>Spotibuy</h1>
             </div>
             <a href={link} className='loginBtn'>Log In</a>

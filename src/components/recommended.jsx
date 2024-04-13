@@ -17,7 +17,7 @@ const RecommendedContainer = styled.div`
     .refreshBtnContainer {
         background: none;
         border: none;
-        margin-top: 7px;
+        margin-top: 52px;
         margin-left: 10px;
     }
     .refreshIcon {
@@ -39,6 +39,14 @@ const RecommendedContainer = styled.div`
     .recCategory {
         display: flex;
         text-align: center;
+    }
+    h2 {
+        margin-bottom: 0;
+        font-size: 32px;
+        margin-top: 40px;
+    }
+    .recListContainer {
+        margin-left: 20px;
     }
 `
 
@@ -111,7 +119,7 @@ export default function Recommended() {
                     <IoRefresh onClick={handleRefreshArtists} size={20} className={'refreshIcon ' + (refreshingArtists ? 'spin' : '')}/>
                 </button>
             </div>
-            <ul>
+            <ul className='recListContainer'>
                 {recArtists.length !== 0 && recArtists.map(artist => (
                     <li key={artist.id}>
                         <ArtistBubble name={artist.name} pictureUrl={artist.images[0].url} genres={artist.genres} url={artist.external_urls}/>
@@ -124,7 +132,7 @@ export default function Recommended() {
                     <IoRefresh onClick={handleRefreshSongs} size={20} className={'refreshIcon ' + (refreshingSongs ? 'spin' : '')}/>
                 </button>
             </div>
-            <ul>
+            <ul className='recListContainer'>
                 {recTracks.length !== 0 && recTracks.map(song => (
                     <li key={song.id}>
                         <SongCard song={song} currentSong={currentSong} setCurrentSong={setCurrentSong} songRef={songRef}/>

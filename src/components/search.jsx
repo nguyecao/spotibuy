@@ -34,6 +34,7 @@ const SearchContainer = styled.div`
     }
     .formContainer {
         max-width: 500px;
+        margin-top: 40px;
     }
     ul {
         display: flex;
@@ -67,6 +68,9 @@ const SearchContainer = styled.div`
     }
     .searchingText {
         color:#535353;
+    }
+    .searchListContainer {
+        margin-left: 20px;
     }
 `
 
@@ -107,7 +111,7 @@ export default function Search() {
 
     function handleSearch(search) {
         setIsSearching(true)
-        const query = search
+        const query = search ? search : 'rickroll'
         const type = 'track'
         const url = `https://api.spotify.com/v1/search?q=${query}&type=${type}&limit=50`
         axios.get(url, {
@@ -141,18 +145,19 @@ export default function Search() {
                     }}/>
                 </form>
             </div>
-            { suggestedSearches.length > 0 &&
+
                 <div>
                     <h4>Suggested Searches</h4>
-                    <ul>
-                        {
-                            suggestedSearches.map((suggestion, idx) => (
-                                <li key={idx} className='tab suggestion' onClick={()=>{handleSuggestionClick(suggestion)}}>{suggestion}</li>
-                        ))}
-                    </ul>
+                    { suggestedSearches.length > 0 &&
+                        <ul>
+                            { suggestedSearches.map((suggestion, idx) => (
+                                    <li key={idx} className='tab suggestion' onClick={()=>{handleSuggestionClick(suggestion)}}>{suggestion}</li>
+                            ))}
+                        </ul>
+                    }
                 </div>
-            }
-            <ul>
+
+            <ul className='searchListContainer'>
                 {isSearching && <>
                     <p className='searchingText'>Searching for songs</p>
                     <button className='refreshBtnContainer'><IoRefresh size={20} className={'refreshIcon ' + (true ? 'spin' : 'spin')}/></button>

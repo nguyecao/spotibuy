@@ -7,6 +7,7 @@ import { selectTopItems } from "../redux.js/topItemsSlice"
 import styled from '@emotion/styled'
 import { useDispatch } from "react-redux"
 import { setTopGenres } from "../redux.js/topItemsSlice"
+import { useState } from "react"
 
 const ProfileContainer = styled.div`
     display: flex;
@@ -14,7 +15,8 @@ const ProfileContainer = styled.div`
     .profileBanner {
         display: flex;
         align-items: center;
-        overflow: hidden;
+        margin: auto;
+        margin-bottom: 30px;
     }
     .imgContainer {
         height: 160px;
@@ -28,9 +30,31 @@ const ProfileContainer = styled.div`
         font-size: 86px;
         margin-left: 24px;
     }
-    .topArtists, .topSongs, .topGenres {
+    .topArtists, .topSongs {
         display: flex;
         flex-direction: column;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .topGenres {
+        margin-top: 100px;
+        width: 100%;
+    }
+    .topGenresConstraintWidth {
+        max-width: 1200px;
+        width: 100%;
+        margin: auto;
+    }
+    .genreName, .genrePerc {
+        font-size: 24px;
+        margin: 10px;
+        font-weight: bold;
+    }
+    .genrePerc {
+        color: #121212;
+    }
+    .genreName {
+        margin-right: auto;
     }
     .profileImg {
         display: inline;
@@ -45,16 +69,48 @@ const ProfileContainer = styled.div`
     .line {
         height: 1px;
         background-color: white;
+        margin-bottom: 10px;
     }
     .topItemsContainer {
         display: flex;
+        flex-direction: column;
+    }
+    .genreDiv {
+        display: flex;
+        background-color: #121212;
+        margin: 2px;
+        transition: background-color 100ms ease;
+    }
+    .genreItem:hover .genreDiv {
+        background-color: #1db954;
+    }
+    .songArtist {
+        display:flex;
         flex-wrap: wrap;
     }
-    .genreItem {
-        background-color: #535353;
+    .topItemPicContainer {
+        overflow: hidden;
+        height: 70px;
+        width: 70px;
+        border-radius: 50%;
+        margin-right: 50px;
     }
-    .genreItem:hover {
-        background-color: #1db954;
+    .topItemPic {
+        width: 100%;
+    }
+    .topItem {
+        display: flex;
+        font-size: 20px;
+        -webkit-transition: background-color 250ms;
+        -ms-transition: background-color 250ms;
+        transition: background-color 250ms;
+        padding: 10px;
+    }
+    .topItem:hover {
+        background-color: #313131;
+    }
+    .artistName {
+        font-weight: bold;
     }
 `
 
@@ -88,36 +144,54 @@ export default function Profile() {
                 <h1>{profile.display_name}</h1>
             </div>
             <div className='topItemsContainer'>
-                <ul className='topArtists'>
-                    <h2 className='topTitle'>Your Top Artists</h2>
-                    <div className='line'/>
-                    {topArtists.slice(0, topNumber).map(artist => (
-                        <li key={artist.id}>{artist.name}</li>
-                    ))}
-                </ul>
-                <ul className='topSongs'>
-                    <h2 className='topTitle'>Your Top Songs</h2>
-                    <div className='line'/>
-                    {topSongs.slice(0, topNumber).map(song => (
-                        <li key={song.id}>{song.name}</li>
-                    ))}
-                </ul>
-
+                <div className='songArtist'>
+                    <ul className='topArtists'>
+                        <h2 className='topTitle'>Your Top Artists</h2>
+                        <div className='line'/>
+                        {topArtists.slice(0, topNumber).map((artist, idx) => (
+                            // idx % 2 == 0 ?
+                            // <li key={artist.id} className='topItem even'>
+                            //     <h3>{idx + 1}</h3>
+                            //     <p>{artist.name}</p>
+                            //     <div className='topItemPicContainer'><img className='topItemPic' src={artist.images[0].url}/></div>
+                            // </li>
+                            // :
+                            <li key={artist.id} className='topItem odd'>
+                                <div><div className='topItemPicContainer'><img className='topItemPic' src={artist.images[0].url}/></div></div>
+                                <p>{artist.name}</p>
+                                {/* <h3>{idx + 1}</h3> */}
+                            </li>
+                        ))}
+                    </ul>
+                    <ul className='topSongs'>
+                        <h2 className='topTitle'>Your Top Songs</h2>
+                        <div className='line'/>
+                        {topSongs.slice(0, topNumber).map(song => (
+                            <li key={song.id} className='topItem'>
+                                <div><div className='topItemPicContainer'><img className='topItemPic' src={song.album.images[0].url}/></div></div>
+                                <p><span className='artistName'>{`${song.artists[0].name} - `}</span>{`${song.name}`}</p>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
                 <ul className='topGenres'>
-                    <h2 className='topTitle'>Your Top Genres</h2>
-                    <div className='line'/>
-                    {sortedGenres.slice(0, topNumber).map(genre => (
-                        <li
-                            style={{
-                                width: `${getGenrePercent(genre[1]) / (Math.trunc((1.0 * sortedGenres[0][1] / totalCount) * 100)) * 100 + '%'}`
-                            }}
-                            key={genre[0]}
-                            className='genreItem'>
-
-                            <span>{genre[0]}</span>
-                            <span>{`${getGenrePercent(genre[1])}%`}</span>
-                        </li>
-                    ))}
+                    <div className='topGenresConstraintWidth'>
+                        <h2 className='topTitle'>Your Top Genres</h2>
+                        <div className='line'/>
+                        {sortedGenres.slice(0, topNumber).map(genre => (
+                            <li
+                                style={{
+                                    width: `${getGenrePercent(genre[1]) / (Math.trunc((1.0 * sortedGenres[0][1] / totalCount) * 100)) * 100 + '%'}`
+                                }}
+                                key={genre[0]}
+                                className='genreItem'>
+                                <div className='genreDiv'>
+                                    <span className='genreName'>{genre[0]}</span>
+                                    <span className='genrePerc'>{`${getGenrePercent(genre[1])}%`}</span>
+                                </div>
+                            </li>
+                        ))}
+                    </div>
                 </ul>
             </div>
         </ProfileContainer>

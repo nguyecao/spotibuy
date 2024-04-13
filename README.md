@@ -12,8 +12,4 @@ How to run:
 TODO:
 
 - implement successful checkout page
-- style profile page
 - implement about page
-- hover effects to artist and songs
-- click on song or artist to open in spotify
-- gradient background (maybe navbar?)

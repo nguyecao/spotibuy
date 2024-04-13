@@ -10,6 +10,7 @@ import { selectCart } from './redux.js/cartSlice'
 import { selectProfile } from './redux.js/profileSlice'
 import Login from './components/login'
 import { FaSpotify } from "react-icons/fa"
+import { PiVinylRecord } from "react-icons/pi"
 
 const AppContainer = styled.div`
     nav {
@@ -29,6 +30,7 @@ const AppContainer = styled.div`
     }
     .tabs {
         padding-right: 10px;
+        margin-left: 20px;
     }
     a {
         text-decoration: none;
@@ -40,7 +42,7 @@ const AppContainer = styled.div`
         border-radius: 99999px;
         padding-top: 5px;
         padding-bottom: 5px;
-        margin-right: 5px;
+        margin-right: 10px;
         -webkit-transition: background-color 250ms;
         -ms-transition: background-color 250ms;
         transition: background-color 250ms;
@@ -115,6 +117,10 @@ const AppContainer = styled.div`
     .spotifyLogo {
         color: #1db954;
     }
+    main {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
 `
 
 function App({ children }) {
@@ -130,7 +136,8 @@ function App({ children }) {
                     <h1>
                         <a id='name'>
                             {/* <img className='logo' src='https://cdn.freebiesupply.com/logos/large/2x/spotify-2-logo-png-transparent.png'/> */}
-                            <FaSpotify size={50} className='spotifyLogo'/>
+                            {/* <FaSpotify size={50} className='spotifyLogo'/> */}
+                            <PiVinylRecord size={50} className='spotifyLogo'/>
                             <p className='nameText'>Spotibuy</p>
                         </a>
                     </h1>

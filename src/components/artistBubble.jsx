@@ -24,7 +24,7 @@ const ArtistBubbleContainer = styled.div`
         font-weight: bold;
     }
     .artistPic:hover .genres:hover {
-        opacity: 70%;
+        opacity: 75%;
     }
     .genres {
         background-color: black;
