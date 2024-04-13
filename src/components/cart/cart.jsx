@@ -20,16 +20,17 @@ const CartContainer = styled.div`
 `
 
 export default function Cart() {
+    const [orderTotal, setOrderTotal] = useState('')
     const [newPlaylistId, setNewPlaylistId] = useState(null)
     return (
         <CartContainer>
-            {newPlaylistId ? <Success playlistId={newPlaylistId}/> :
+            {newPlaylistId ? <Success playlistId={newPlaylistId} orderTotal={orderTotal}/> :
             <>
                 <div className='cartListContainer'> {/* div for styling purposes */}
                     <CartList/>
                 </div>
                 <div className='orderSummaryContainer'> {/* div for styling purposes */}
-                    <OrderSummary setNewPlaylistId={setNewPlaylistId}/>
+                    <OrderSummary setNewPlaylistId={setNewPlaylistId} setOrderTotal={setOrderTotal}/>
                 </div>
             </>
             }

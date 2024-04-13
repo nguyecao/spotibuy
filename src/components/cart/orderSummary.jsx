@@ -62,7 +62,7 @@ const OrderSummaryContainer = styled.div`
     }
 `
 
-export default function OrderSummary({setNewPlaylistId}) {
+export default function OrderSummary({setNewPlaylistId, setOrderTotal}) {
     const dispatch = useDispatch()
     const token = useSelector(selectToken)
     const cartItems = useSelector(selectCart)
@@ -118,6 +118,7 @@ export default function OrderSummary({setNewPlaylistId}) {
                     dispatch(clearCart())
                     setAcknowledge(false)
                     checkoutPlaylist()
+                    setOrderTotal(converTime(totalTime))
                 }
             }}>
                 <h3>Order Summary</h3>
