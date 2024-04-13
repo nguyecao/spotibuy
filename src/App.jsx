@@ -161,6 +161,9 @@ function App({ children }) {
                 <main>
                     { children || <Outlet/> }
                 </main>
+                <footer>
+
+                </footer>
             </>
             :
             <Login/>

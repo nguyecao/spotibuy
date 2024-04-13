@@ -11,5 +11,5 @@ How to run:
 
 TODO:
 
-- implement successful checkout page
+- implement footer
 - implement about page
