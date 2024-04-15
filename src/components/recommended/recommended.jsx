@@ -1,6 +1,5 @@
 import styled from "@emotion/styled"
 import SongCard from "../search/songCard"
-import { selectToken } from "../../redux.js/tokenSlice"
 import { useSelector } from "react-redux"
 import { useEffect, useState } from "react"
 import { selectTopItems } from "../../redux.js/topItemsSlice"
@@ -53,7 +52,6 @@ const RecommendedContainer = styled.div`
 export default function Recommended() {
     const songRef = useRef(new Audio())
     const [currentSong, setCurrentSong] = useState(null)
-    const token = useSelector(selectToken)
     const topSongIds = useSelector(selectTopItems).songs.map(song => song.id)
     const topArtistIds = useSelector(selectTopItems).artists.map(artist => artist.id)
     const [recTracks, setRecTracks] = useState([])
@@ -68,7 +66,6 @@ export default function Recommended() {
         const topSongIdsString = `${topSongIds[(refreshSongsClicks * 5) % topSongIds.length]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 1]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 2]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 3]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 4]}`
         axios.get('/api/refreshSongs', {
             params: {
-                token: token,
                 topSongIdsString: topSongIdsString
             }
         })
@@ -87,7 +84,6 @@ export default function Recommended() {
         const topArtistId = topArtistIds[refreshArtistsClicks % topArtistIds.length]
         axios.get('/api/refreshArtists', {
             params: {
-                token: token,
                 topArtistId: topArtistId
             }
         })

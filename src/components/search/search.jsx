@@ -3,10 +3,10 @@ import { useState, useRef, useEffect } from "react"
 import { IoIosSearch } from "react-icons/io"
 import SongCard from "./songCard"
 import { useSelector } from "react-redux"
-import { selectToken } from "../../redux.js/tokenSlice"
 import axios from "axios"
 import { selectTopItems } from "../../redux.js/topItemsSlice"
 import { IoRefresh } from "react-icons/io5"
+import { selectProfile } from "../../redux.js/profileSlice"
 
 const SearchContainer = styled.div`
     #search {
@@ -79,15 +79,11 @@ export default function Search() {
     const [searchResults, setSearchResults] = useState([])
     const [suggestedSearches, setSuggestedSearches] = useState([])
     const [isSearching, setIsSearching] = useState(false)
-    const token = useSelector(selectToken)
+    const profile = useSelector(selectProfile)
 
     useEffect(() => {
         async function getSuggestedSearches() {
-            axios.get(`/api/suggestedSearches`, {
-                params: {
-                    token: token
-                }
-            })
+            axios.get(`/api/suggestedSearches`, {})
                 .then(response => {
                     const trendingSongs = response.data.tracks.items.map(song => song.track.name)
                     const trendingArtists = response.data.tracks.items.map(song => song.track.artists[0].name)
@@ -104,7 +100,7 @@ export default function Search() {
                     console.error(error)
                 })
         }
-        if (token) {
+        if (profile) {
             getSuggestedSearches()
         }
     },[])
@@ -117,8 +113,7 @@ export default function Search() {
         setIsSearching(true)
         axios.get('/api/search', {
             params: {
-                query: search,
-                token: token
+                query: search
             }
         })
             .then(response => {

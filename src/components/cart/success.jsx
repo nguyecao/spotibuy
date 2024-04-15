@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux"
 import { clearCart } from "../../redux.js/cartSlice"
 import axios from "axios"
 import { useSelector } from "react-redux"
-import { selectToken } from "../../redux.js/tokenSlice"
 import styled from "@emotion/styled"
 import { NavLink } from "react-router-dom"
 import { RiSpotifyLine } from "react-icons/ri"
@@ -58,14 +57,12 @@ const SuccessContainer = styled.div`
 
 export default function Success({playlistId, orderTotal}) {
     const dispatch = useDispatch()
-    const token = useSelector(selectToken)
     const [playlistData, setPlaylistData] = useState(null)
     useEffect(() => {
         dispatch(clearCart())
         axios.get('/api/successOrder', {
             params: {
-                playlistId: playlistId,
-                token: token
+                playlistId: playlistId
             }
         })
             .then(response => {

@@ -9,7 +9,7 @@ const client_id = process.env.VITE_SPOTIFY_CLIENT_ID
 const client_secret = process.env.VITE_SPOTIFY_CLIENT_SECRET
 const redirect_uri = process.env.VITE_OAUTH_REDIRECT_URL
 
-// let token = null
+let TOKEN = null
 
 let app = express()
 
@@ -23,12 +23,11 @@ app.get('/api/test', async (req, res) => {
 app.post('/api/createPlaylist', async (req, res) => {
     const playlistData = req.query.playlistData
     const userId = req.query.userId
-    const token = req.query.token
     const uris = req.query.uris
 
     axios.post(`https://api.spotify.com/v1/users/${userId}/playlists`, playlistData, {
         headers: {
-            'Authorization': 'Bearer ' + token,
+            'Authorization': 'Bearer ' + TOKEN,
             'Content-Type': 'application/json'
         }
     })
@@ -36,7 +35,7 @@ app.post('/api/createPlaylist', async (req, res) => {
             const playlistId = response.data.id
             axios.post(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?uris=${uris.join(',')}`, null, {
                 headers: {
-                    'Authorization': 'Bearer ' + token,
+                    'Authorization': 'Bearer ' + TOKEN,
                     'Content-Type': 'application/json'
                 }
             })
@@ -54,10 +53,9 @@ app.post('/api/createPlaylist', async (req, res) => {
 
 app.get('/api/successOrder', async (req, res) => {
     const playlistId = req.query.playlistId
-    const token = req.query.token
     axios.get(`https://api.spotify.com/v1/playlists/${playlistId}`, {
         headers: {
-            Authorization: 'Bearer ' + token
+            Authorization: 'Bearer ' + TOKEN
         }
     })
         .then(response => {
@@ -70,11 +68,10 @@ app.get('/api/successOrder', async (req, res) => {
 
 app.get('/api/refreshArtists', async (req, res) => {
     const topArtistId = req.query.topArtistId
-    const token = req.query.token
     const url = `https://api.spotify.com/v1/artists/${topArtistId}/related-artists`
     axios.get(url, {
         headers: {
-            Authorization: 'Bearer ' + token
+            Authorization: 'Bearer ' + TOKEN
         }
     })
         .then(response => {
@@ -87,12 +84,11 @@ app.get('/api/refreshArtists', async (req, res) => {
 })
 
 app.get('/api/refreshSongs', async (req, res) => {
-    const token = req.query.token
     const topSongIdsString = req.query.topSongIdsString
     const url = 'https://api.spotify.com/v1/recommendations'
     axios.get(`${url}?limit=100&seed_tracks=${topSongIdsString}`, {
         headers: {
-            Authorization: 'Bearer ' + token
+            Authorization: 'Bearer ' + TOKEN
         }
     })
         .then(response => {
@@ -105,13 +101,12 @@ app.get('/api/refreshSongs', async (req, res) => {
 })
 
 app.get('/api/search', async (req, res) => {
-    const query = req.query.query
-    const token = req.query.token
+    const query = req.query.query === undefined ? 'Rick Astley - Never Gonna Give You Up' : req.query.query
     const type = 'track'
     const url = `https://api.spotify.com/v1/search?q=${query}&type=${type}&limit=50`
     axios.get(url, {
         headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${TOKEN}`
         }
     })
         .then(response => {
@@ -123,10 +118,9 @@ app.get('/api/search', async (req, res) => {
 })
 
 app.get('/api/suggestedSearches', async (req, res) => {
-    const token = req.query.token
     axios.get('https://api.spotify.com/v1/playlists/37i9dQZF1DXcBWIGoYBM5M', {
             headers: {
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${TOKEN}`
             }
         })
         .then(response => {
@@ -138,12 +132,12 @@ app.get('/api/suggestedSearches', async (req, res) => {
 })
 
 app.post('/api/tokenExchange', async (req, res) => {
-    async function getProfile(token) {
+    async function getProfile() {
         const url = 'https://api.spotify.com/v1/me'
         try {
             const response = await axios.get(url, {
                 headers: {
-                    Authorization: 'Bearer ' + token
+                    Authorization: 'Bearer ' + TOKEN
                 }
             });
             return response.data
@@ -152,12 +146,12 @@ app.post('/api/tokenExchange', async (req, res) => {
             throw error
         }
     }
-    async function getTopSongs(token) {
+    async function getTopSongs() {
         const url = 'https://api.spotify.com/v1/me/top/tracks?limit=50'
         try {
             const response = await axios.get(url, {
                 headers: {
-                    Authorization: 'Bearer ' + token
+                    Authorization: 'Bearer ' + TOKEN
                 }
             });
             return response.data.items
@@ -166,12 +160,12 @@ app.post('/api/tokenExchange', async (req, res) => {
             throw error
         }
     }
-    async function getTopArtists(token) {
+    async function getTopArtists() {
         const url = 'https://api.spotify.com/v1/me/top/artists?limit=50'
         try {
             const response = await axios.get(url, {
                 headers: {
-                    Authorization: 'Bearer ' + token
+                    Authorization: 'Bearer ' + TOKEN
                 }
             });
             return response.data.items
@@ -196,11 +190,11 @@ app.post('/api/tokenExchange', async (req, res) => {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 }
             });
-            const token = response.data.access_token
-            const profileData = await getProfile(token)
-            const topSongsData = await getTopSongs(token)
-            const topArtistsData = await getTopArtists(token)
-            res.status(200).send({ msg: 'OK!', token, profile: profileData, topSongs: topSongsData, topArtists: topArtistsData })
+            TOKEN = response.data.access_token
+            const profileData = await getProfile()
+            const topSongsData = await getTopSongs()
+            const topArtistsData = await getTopArtists()
+            res.status(200).send({ msg: 'OK!', token: TOKEN, profile: profileData, topSongs: topSongsData, topArtists: topArtistsData })
         } catch (error) {
             res.status(500).send({ error: 'Empty response from token endpoint' })
         }

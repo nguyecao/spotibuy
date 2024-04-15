@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
 import { TiShoppingCart } from "react-icons/ti"
 import { useDispatch } from 'react-redux'
-import { setToken } from './redux.js/tokenSlice'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
 import { selectCart } from './redux.js/cartSlice'

@@ -3,8 +3,6 @@ import { useSearchParams } from "react-router-dom"
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { useDispatch } from 'react-redux'
-import { setToken } from "../redux.js/tokenSlice"
-import { selectToken } from "../redux.js/tokenSlice"
 import { useSelector } from "react-redux"
 import { selectProfile } from "../redux.js/profileSlice"
 import { setProfile } from "../redux.js/profileSlice"
@@ -58,7 +56,6 @@ export default function Login() {
     const dispatch = useDispatch()
 
     const [searchParams, setSearchParams] = useSearchParams()
-    const code = searchParams.get('code')
 
     const queryParams = new URLSearchParams({
         response_type: 'code',
@@ -71,35 +68,37 @@ export default function Login() {
     let profileData = null
 
     useEffect(() => {
+        const code = searchParams.get('code')
         async function exchangeForAccessToken(code) {
-            const res = await fetch('/api/tokenExchange', {
-                method: 'POST',
-                body: JSON.stringify({code}),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            if (res.status !== 200) {
-                console.error('== Error exchanging code for token')
-            } else {
-                const body = await res.json()
-                if (body && body.profile && body.topArtists && body.topSongs) {
-                    dispatch(setToken(body.token))
-                    profileData = {
-                        profile: body.profile,
-                        topSongs: body.topSongs,
-                        topArtists: body.topArtists
+            if (code) {
+                const res = await fetch('/api/tokenExchange', {
+                    method: 'POST',
+                    body: JSON.stringify({code}),
+                    headers: {
+                        'Content-Type': 'application/json'
                     }
-                    dispatch(setProfile(body.profile))
-                    dispatch(setTopArtists(body.topArtists))
-                    dispatch(setTopSongs(body.topSongs))
+                })
+                if (res.status !== 200) {
+                    console.error('== Error exchanging code for token')
+                } else {
+                    const body = await res.json()
+                    if (body && body.profile && body.topArtists && body.topSongs) {
+                        profileData = {
+                            profile: body.profile,
+                            topSongs: body.topSongs,
+                            topArtists: body.topArtists
+                        }
+                        dispatch(setProfile(body.profile))
+                        dispatch(setTopArtists(body.topArtists))
+                        dispatch(setTopSongs(body.topSongs))
+                    }
                 }
             }
         }
-        if (code) {
-            exchangeForAccessToken(code)
-        }
-    }, [code])
+
+        exchangeForAccessToken(code)
+
+    }, [])
 
     return(
         <LoginContainer>

@@ -1,6 +1,5 @@
 import axios from "axios"
 import { useEffect } from "react"
-import { selectToken } from "../../redux.js/tokenSlice"
 import { useSelector } from "react-redux"
 import { selectProfile } from "../../redux.js/profileSlice"
 import { selectTopItems } from "../../redux.js/topItemsSlice"

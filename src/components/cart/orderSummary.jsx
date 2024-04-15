@@ -7,7 +7,6 @@ import { MdOutlineCheckBox } from "react-icons/md"
 import { converTime } from "../../App";
 import axios from 'axios'
 import { selectProfile } from "../../redux.js/profileSlice";
-import { selectToken } from "../../redux.js/tokenSlice";
 
 const OrderSummaryContainer = styled.div`
     /* overflow: hidden;
@@ -64,7 +63,6 @@ const OrderSummaryContainer = styled.div`
 
 export default function OrderSummary({setNewPlaylistId, setOrderTotal}) {
     const dispatch = useDispatch()
-    const token = useSelector(selectToken)
     const cartItems = useSelector(selectCart)
     const [totalTime, setTotalTime] = useState(0)
     const [acknowledge, setAcknowledge] = useState(false)
@@ -88,7 +86,6 @@ export default function OrderSummary({setNewPlaylistId, setOrderTotal}) {
         axios.post('/api/createPlaylist', null, {
             params: {
                 playlistData: playlistData,
-                token: token,
                 uris: uris,
                 userId: userId
             }
