@@ -20,6 +20,54 @@ app.get('/api/test', async (req, res) => {
     res.status(200).send({msg: 'OK!'})
 })
 
+app.post('/api/createPlaylist', async (req, res) => {
+    const playlistData = req.query.playlistData
+    const userId = req.query.userId
+    const token = req.query.token
+    const uris = req.query.uris
+
+    axios.post(`https://api.spotify.com/v1/users/${userId}/playlists`, playlistData, {
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => {
+            const playlistId = response.data.id
+            axios.post(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?uris=${uris.join(',')}`, null, {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    res.status(201).send(playlistId)
+                })
+                .catch(error => {
+                    res.status(401).send(error)
+                })
+        })
+        .catch(error => {
+            res.status(401).send(error)
+        })
+})
+
+app.get('/api/successOrder', async (req, res) => {
+    const playlistId = req.query.playlistId
+    const token = req.query.token
+    axios.get(`https://api.spotify.com/v1/playlists/${playlistId}`, {
+        headers: {
+            Authorization: 'Bearer ' + token
+        }
+    })
+        .then(response => {
+            res.status(200).send(response.data)
+        })
+        .catch(error => {
+            res.status(400).send(error)
+        })
+})
+
 app.get('/api/refreshArtists', async (req, res) => {
     const topArtistId = req.query.topArtistId
     const token = req.query.token

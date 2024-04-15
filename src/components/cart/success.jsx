@@ -62,13 +62,13 @@ export default function Success({playlistId, orderTotal}) {
     const [playlistData, setPlaylistData] = useState(null)
     useEffect(() => {
         dispatch(clearCart())
-        axios.get(`https://api.spotify.com/v1/playlists/${playlistId}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
+        axios.get('/api/successOrder', {
+            params: {
+                playlistId: playlistId,
+                token: token
             }
         })
             .then(response => {
-                console.log(response.data)
                 setPlaylistData(response.data)
             })
             .catch(error => {

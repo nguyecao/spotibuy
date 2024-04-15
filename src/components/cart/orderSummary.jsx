@@ -79,31 +79,22 @@ export default function OrderSummary({setNewPlaylistId, setOrderTotal}) {
     }, [cartItems.length])
 
     function checkoutPlaylist() {
+        const uris = cartItems.map(item => item.uri)
         const playlistData = {
             name: 'Spoitbuy Playlist',
             description: 'Created on Spotibuy',
             public: true
         }
-        axios.post(`https://api.spotify.com/v1/users/${userId}/playlists`, playlistData, {
-            headers: {
-                'Authorization': 'Bearer ' + token,
-                'Content-Type': 'application/json'
+        axios.post('/api/createPlaylist', null, {
+            params: {
+                playlistData: playlistData,
+                token: token,
+                uris: uris,
+                userId: userId
             }
         })
             .then(response => {
-                const playlistId = response.data.id
-                const uris = cartItems.map(item => item.uri)
-
-                axios.post(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?uris=${uris.join(',')}`, null, {
-                    headers: {
-                        'Authorization': 'Bearer ' + token,
-                        'Content-Type': 'application/json'
-                    }
-                })
-                    .catch(error => {
-                        console.error(error)
-                    })
-                setNewPlaylistId(playlistId)
+                setNewPlaylistId(response.data)
             })
             .catch(error => {
                 console.error(error)
