@@ -83,15 +83,17 @@ export default function Login() {
                 console.error('== Error exchanging code for token')
             } else {
                 const body = await res.json()
-                dispatch(setToken(body.token))
-                profileData = {
-                    profile: body.profile,
-                    topSongs: body.topSongs,
-                    topArtists: body.topArtists
+                if (body && body.profile && body.topArtists && body.topSongs) {
+                    dispatch(setToken(body.token))
+                    profileData = {
+                        profile: body.profile,
+                        topSongs: body.topSongs,
+                        topArtists: body.topArtists
+                    }
+                    dispatch(setProfile(body.profile))
+                    dispatch(setTopArtists(body.topArtists))
+                    dispatch(setTopSongs(body.topSongs))
                 }
-                dispatch(setProfile(body.profile))
-                dispatch(setTopArtists(body.topArtists))
-                dispatch(setTopSongs(body.topSongs))
             }
         }
         if (code) {
