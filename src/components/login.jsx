@@ -68,6 +68,8 @@ export default function Login() {
     })
     const link = `https://accounts.spotify.com/authorize?${queryParams}`
 
+    let profileData = null
+
     useEffect(() => {
         async function exchangeForAccessToken(code) {
             const res = await fetch('/api/tokenExchange', {
@@ -81,7 +83,17 @@ export default function Login() {
                 console.error('== Error exchanging code for token')
             } else {
                 const body = await res.json()
-                dispatch(setToken(body.body.access_token))
+                console.log(body)
+                dispatch(setToken(body.token))
+                profileData = {
+                    profile: body.profile,
+                    topSongs: body.topSongs,
+                    topArtists: body.topArtists
+                }
+                console.log(profileData)
+                dispatch(setProfile(body.profile))
+                dispatch(setTopArtists(body.topArtists))
+                dispatch(setTopSongs(body.topSongs))
             }
         }
         if (code) {
@@ -89,53 +101,6 @@ export default function Login() {
         }
     }, [code])
 
-    const accessToken = useSelector(selectToken)
-    useEffect(() => {
-        if (accessToken) {
-            async function getProfile() {
-                const response = await fetch('https://api.spotify.com/v1/me', {
-                    headers: {
-                        Authorization: 'Bearer ' + accessToken
-                    }
-                })
-                const data = await response.json()
-                dispatch(setProfile(data))
-            }
-            async function getTopSongs() {
-                const url = 'https://api.spotify.com/v1/me/top/tracks?limit=50'
-                axios.get(url, {
-                    headers: {
-                        Authorization: 'Bearer ' + accessToken
-                    }
-                })
-                    .then(response => {
-                        dispatch(setTopSongs(response.data.items))
-                    })
-                    .catch(error => {
-                        console.error(error)
-                    })
-            }
-            async function getTopArtists() {
-                const url = 'https://api.spotify.com/v1/me/top/artists?limit=50'
-                axios.get(url, {
-                    headers: {
-                        Authorization: 'Bearer ' + accessToken
-                    }
-                })
-                    .then(response => {
-                        dispatch(setTopArtists(response.data.items))
-                    })
-                    .catch(error => {
-                        console.error(error)
-                    })
-            }
-            if (accessToken) {
-                getProfile()
-                getTopSongs()
-                getTopArtists()
-            }
-        }
-    },[accessToken])
     return(
         <LoginContainer>
             <div className='loginBanner'>

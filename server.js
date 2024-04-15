@@ -21,6 +21,48 @@ app.get('/api/user', async (req, res) => {
 })
 
 app.post('/api/tokenExchange', async (req, res) => {
+    async function getProfile(token) {
+        const url = 'https://api.spotify.com/v1/me'
+        try {
+            const response = await axios.get(url, {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            });
+            return response.data;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
+    async function getTopSongs(token) {
+        const url = 'https://api.spotify.com/v1/me/top/tracks?limit=50'
+        try {
+            const response = await axios.get(url, {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            });
+            return response.data.items;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
+    async function getTopArtists(token) {
+        const url = 'https://api.spotify.com/v1/me/top/artists?limit=50'
+        try {
+            const response = await axios.get(url, {
+                headers: {
+                    Authorization: 'Bearer ' + token
+                }
+            });
+            return response.data.items;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
     const {code} = req.body
     if (!code) {
         res.status(400).send({err: 'Must specify auth code'})
@@ -37,8 +79,11 @@ app.post('/api/tokenExchange', async (req, res) => {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 }
             });
-            const body = response.data
-            res.status(200).send({msg: 'OK!', body: body});
+            const token = response.data.access_token
+            const profileData = await getProfile(token)
+            const topSongsData = await getTopSongs(token)
+            const topArtistsData = await getTopArtists(token)
+            res.status(200).send({msg: 'OK!', token: token, profile: profileData, topSongs: topSongsData, topArtists: topArtistsData});
         } catch (error) {
         }
 
