@@ -65,36 +65,50 @@ export default function Recommended() {
 
     useEffect(() => {
         setRefreshingSongs(true)
-            const topSongIdsString = `${topSongIds[(refreshSongsClicks * 5) % topSongIds.length]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 1]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 2]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 3]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 4]}`
-            const url = 'https://api.spotify.com/v1/recommendations'
-            axios.get(`${url}?limit=100&seed_tracks=${topSongIdsString}`, {
-                headers: {
-                    Authorization: 'Bearer ' + token
-                }
+            // const topSongIdsString = `${topSongIds[(refreshSongsClicks * 5) % topSongIds.length]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 1]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 2]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 3]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 4]}`
+            // const url = 'https://api.spotify.com/v1/recommendations'
+            // axios.get(`${url}?limit=100&seed_tracks=${topSongIdsString}`, {
+            //     headers: {
+            //         Authorization: 'Bearer ' + token
+            //     }
+            // })
+            //     .then(response => {
+            //         const randomizedTracks = response.data.tracks.sort(() => Math.random() - 0.5)
+            //         setRecTracks(randomizedTracks)
+            //         setRefreshingSongs(false)
+            //     })
+            //     .catch(error => {
+            //         console.error(error)
+            //         setRefreshingSongs(false)
+            //     })
+        const topSongIdsString = `${topSongIds[(refreshSongsClicks * 5) % topSongIds.length]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 1]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 2]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 3]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 4]}`
+        axios.get('/api/refreshSongs', {
+            params: {
+                token: token,
+                topSongIdsString: topSongIdsString
+            }
+        })
+            .then(response => {
+                setRecTracks(response.data)
+                setRefreshingSongs(false)
             })
-                .then(response => {
-                    const randomizedTracks = response.data.tracks.sort(() => Math.random() - 0.5)
-                    setRecTracks(randomizedTracks)
-                    setRefreshingSongs(false)
-                })
-                .catch(error => {
-                    console.error(error)
-                    setRefreshingSongs(false)
-                })
+            .catch(error => {
+                console.error(error)
+                setRefreshingSongs(false)
+            })
     },[refreshSongsClicks])
 
     useEffect(() => {
         setRefreshingArtists(true)
         const topArtistId = topArtistIds[refreshArtistsClicks % topArtistIds.length]
-        const url = `https://api.spotify.com/v1/artists/${topArtistId}/related-artists`
-        axios.get(url, {
-            headers: {
-                Authorization: 'Bearer ' + token
+        axios.get('/api/refreshArtists', {
+            params: {
+                token: token,
+                topArtistId: topArtistId
             }
         })
             .then(response => {
-                const randomizedArtists = response.data.artists.sort(() => Math.random() - 0.5)
-                setRecArtists(randomizedArtists)
+                setRecArtists(response.data)
                 setRefreshingArtists(false)
             })
             .catch(error => {

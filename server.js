@@ -16,8 +16,44 @@ let app = express()
 app.use(cors())
 app.use(express.json())
 
-app.get('/api/user', async (req, res) => {
+app.get('/api/test', async (req, res) => {
     res.status(200).send({msg: 'OK!'})
+})
+
+app.get('/api/refreshArtists', async (req, res) => {
+    const topArtistId = req.query.topArtistId
+    const token = req.query.token
+    const url = `https://api.spotify.com/v1/artists/${topArtistId}/related-artists`
+    axios.get(url, {
+        headers: {
+            Authorization: 'Bearer ' + token
+        }
+    })
+        .then(response => {
+            const randomizedArtists = response.data.artists.sort(() => Math.random() - 0.5)
+            res.status(200).send(randomizedArtists)
+        })
+        .catch(error => {
+            res.status(400).send(error)
+        })
+})
+
+app.get('/api/refreshSongs', async (req, res) => {
+    const token = req.query.token
+    const topSongIdsString = req.query.topSongIdsString
+    const url = 'https://api.spotify.com/v1/recommendations'
+    axios.get(`${url}?limit=100&seed_tracks=${topSongIdsString}`, {
+        headers: {
+            Authorization: 'Bearer ' + token
+        }
+    })
+        .then(response => {
+            const randomizedTracks = response.data.tracks.sort(() => Math.random() - 0.5)
+            res.status(200).send(randomizedTracks)
+        })
+        .catch(error => {
+            res.status(400).send(error)
+        })
 })
 
 app.get('/api/search', async (req, res) => {
@@ -34,7 +70,7 @@ app.get('/api/search', async (req, res) => {
             res.status(200).send(response.data.tracks.items)
         })
         .catch(error => {
-            console.error(error)
+            res.status(400).send(error)
         })
 })
 
