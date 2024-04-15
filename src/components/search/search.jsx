@@ -115,20 +115,18 @@ export default function Search() {
 
     function handleSearch(search) {
         setIsSearching(true)
-        const query = search ? search : 'rickroll'
-        const type = 'track'
-        const url = `https://api.spotify.com/v1/search?q=${query}&type=${type}&limit=50`
-        axios.get(url, {
-            headers: {
-                'Authorization': `Bearer ${token}`
+        axios.get('/api/search', {
+            params: {
+                query: search,
+                token: token
             }
         })
-            .then(res => {
-                setSearchResults(res.data.tracks.items)
+            .then(response => {
+                setSearchResults(response.data)
                 setIsSearching(false)
             })
-            .catch(err => {
-                console.error('Error:', err)
+            .catch(error => {
+                console.error(error)
                 setIsSearching(false)
             })
     }

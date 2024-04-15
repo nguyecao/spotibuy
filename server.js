@@ -20,6 +20,24 @@ app.get('/api/user', async (req, res) => {
     res.status(200).send({msg: 'OK!'})
 })
 
+app.get('/api/search', async (req, res) => {
+    const query = req.query.query
+    const token = req.query.token
+    const type = 'track'
+    const url = `https://api.spotify.com/v1/search?q=${query}&type=${type}&limit=50`
+    axios.get(url, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+        .then(response => {
+            res.status(200).send(response.data.tracks.items)
+        })
+        .catch(error => {
+            console.error(error)
+        })
+})
+
 app.get('/api/suggestedSearches', async (req, res) => {
     const token = req.query.token
     axios.get('https://api.spotify.com/v1/playlists/37i9dQZF1DXcBWIGoYBM5M', {
