@@ -20,6 +20,21 @@ app.get('/api/user', async (req, res) => {
     res.status(200).send({msg: 'OK!'})
 })
 
+app.get('/api/suggestedSearches', async (req, res) => {
+    const token = req.query.token
+    axios.get('https://api.spotify.com/v1/playlists/37i9dQZF1DXcBWIGoYBM5M', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => {
+            res.status(200).send(response.data)
+        })
+        .catch(error => {
+            res.status(400).send(error)
+        })
+})
+
 app.post('/api/tokenExchange', async (req, res) => {
     async function getProfile(token) {
         const url = 'https://api.spotify.com/v1/me'
@@ -29,10 +44,10 @@ app.post('/api/tokenExchange', async (req, res) => {
                     Authorization: 'Bearer ' + token
                 }
             });
-            return response.data;
+            return response.data
         } catch (error) {
-            console.error(error);
-            throw error;
+            console.error(error)
+            throw error
         }
     }
     async function getTopSongs(token) {
@@ -43,10 +58,10 @@ app.post('/api/tokenExchange', async (req, res) => {
                     Authorization: 'Bearer ' + token
                 }
             });
-            return response.data.items;
+            return response.data.items
         } catch (error) {
-            console.error(error);
-            throw error;
+            console.error(error)
+            throw error
         }
     }
     async function getTopArtists(token) {
@@ -57,10 +72,10 @@ app.post('/api/tokenExchange', async (req, res) => {
                     Authorization: 'Bearer ' + token
                 }
             });
-            return response.data.items;
+            return response.data.items
         } catch (error) {
-            console.error(error);
-            throw error;
+            console.error(error)
+            throw error
         }
     }
     const {code} = req.body
@@ -68,10 +83,10 @@ app.post('/api/tokenExchange', async (req, res) => {
         res.status(400).send({err: 'Must specify auth code'})
     } else {
         const authString = Buffer.from(`${client_id}:${client_secret}`).toString('base64');
-        const formData = new URLSearchParams();
-        formData.append('grant_type', 'authorization_code');
-        formData.append('code', code);
-        formData.append('redirect_uri', redirect_uri);
+        const formData = new URLSearchParams()
+        formData.append('grant_type', 'authorization_code')
+        formData.append('code', code)
+        formData.append('redirect_uri', redirect_uri)
         try {
             const response = await axios.post('https://accounts.spotify.com/api/token', formData, {
                 headers: {

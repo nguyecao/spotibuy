@@ -79,35 +79,39 @@ export default function Search() {
     const [searchResults, setSearchResults] = useState([])
     const [suggestedSearches, setSuggestedSearches] = useState([])
     const [isSearching, setIsSearching] = useState(false)
+    const token = useSelector(selectToken)
 
     useEffect(() => {
-        axios.get('https://api.spotify.com/v1/playlists/37i9dQZF1DXcBWIGoYBM5M', {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then(response => {
-                const trendingSongs = response.data.tracks.items.map(song => song.track.name)
-                const trendingArtists = response.data.tracks.items.map(song => song.track.artists[0].name)
-                const artistCounts = trendingArtists.reduce((acc, artist) => {
-                    acc[artist] = (acc[artist] || 0) + 1;
-                    return acc;
-                }, {})
-                const artistCountArray = Object.entries(artistCounts)
-                artistCountArray.sort((a, b) => b[1] - a[1])
-                const sortedArtists = artistCountArray.map(([artist, count]) => artist)
-                setSuggestedSearches(sortedArtists.slice(0,4).concat(trendingSongs.slice(0,4)))
+        async function getSuggestedSearches() {
+            axios.get(`/api/suggestedSearches`, {
+                params: {
+                    token: token
+                }
             })
-            .catch(error => {
-                console.error(error)
-            })
+                .then(response => {
+                    const trendingSongs = response.data.tracks.items.map(song => song.track.name)
+                    const trendingArtists = response.data.tracks.items.map(song => song.track.artists[0].name)
+                    const artistCounts = trendingArtists.reduce((acc, artist) => {
+                        acc[artist] = (acc[artist] || 0) + 1
+                        return acc
+                    }, {})
+                    const artistCountArray = Object.entries(artistCounts)
+                    artistCountArray.sort((a, b) => b[1] - a[1])
+                    const sortedArtists = artistCountArray.map(([artist, count]) => artist)
+                    setSuggestedSearches(sortedArtists.slice(0,4).concat(trendingSongs.slice(0,4)))
+                })
+                .catch(error => {
+                    console.error(error)
+                })
+        }
+        if (token) {
+            getSuggestedSearches()
+        }
     },[])
 
     // required props for SongCard:
     const songRef = useRef(new Audio()) // audio source
     const [currentSong, setCurrentSong] = useState(null) // current song in audio source
-
-    const token = useSelector(selectToken)
 
     function handleSearch(search) {
         setIsSearching(true)
