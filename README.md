@@ -8,8 +8,3 @@ How to run:
 4. open 2 terminals
 5. terminal 1: npm start, terminal 2: npm run dev
 6. go to http://localhost:5173/
-
-TODO:
-
-- implement footer
-- implement about page
