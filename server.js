@@ -116,8 +116,9 @@ app.post('/api/tokenExchange', async (req, res) => {
             const profileData = await getProfile(token)
             const topSongsData = await getTopSongs(token)
             const topArtistsData = await getTopArtists(token)
-            res.status(200).send({msg: 'OK!', token: token, profile: profileData, topSongs: topSongsData, topArtists: topArtistsData});
+            res.status(200).send({ msg: 'OK!', token, profile: profileData, topSongs: topSongsData, topArtists: topArtistsData })
         } catch (error) {
+            res.status(500).send({ error: 'Empty response from token endpoint' })
         }
 
     }
