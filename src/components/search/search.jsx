@@ -111,7 +111,7 @@ export default function Search() {
 
     function handleSearch(search) {
         setIsSearching(true)
-        axios.get('/api/search', {
+        axios.get('https://spotibuy-backend.onrender.com/api/search', {
             params: {
                 query: search
             }
