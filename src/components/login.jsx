@@ -49,13 +49,10 @@ const LoginContainer = styled.div`
 
 export default function Login() {
     const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID
-    const CLIENT_SECRET = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET
     const REDIRECT_URL = import.meta.env.VITE_OAUTH_REDIRECT_URL
     const SCOPE = 'user-read-private user-read-email user-top-read playlist-modify-public playlist-modify-private'
 
     const dispatch = useDispatch()
-
-    const [searchParams, setSearchParams] = useSearchParams()
 
     const queryParams = new URLSearchParams({
         response_type: 'code',
@@ -64,41 +61,6 @@ export default function Login() {
         redirect_uri: REDIRECT_URL
     })
     const link = `https://accounts.spotify.com/authorize?${queryParams}`
-
-    let profileData = null
-
-    useEffect(() => {
-        const code = searchParams.get('code')
-        async function exchangeForAccessToken(code) {
-            if (code) {
-                const res = await fetch('/api/tokenExchange', {
-                    method: 'POST',
-                    body: JSON.stringify({code}),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                if (res.status !== 200) {
-                    console.error('== Error exchanging code for token')
-                } else {
-                    const body = await res.json()
-                    if (body && body.profile && body.topArtists && body.topSongs) {
-                        profileData = {
-                            profile: body.profile,
-                            topSongs: body.topSongs,
-                            topArtists: body.topArtists
-                        }
-                        dispatch(setProfile(body.profile))
-                        dispatch(setTopArtists(body.topArtists))
-                        dispatch(setTopSongs(body.topSongs))
-                    }
-                }
-            }
-        }
-
-        exchangeForAccessToken(code)
-
-    }, [])
 
     return(
         <LoginContainer>

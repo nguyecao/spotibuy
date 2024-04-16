@@ -174,31 +174,27 @@ app.post('/api/tokenExchange', async (req, res) => {
             throw error
         }
     }
-    const {code} = req.body
-    if (!code) {
-        res.status(400).send({err: 'Must specify auth code'})
-    } else {
-        const authString = Buffer.from(`${client_id}:${client_secret}`).toString('base64');
-        const formData = new URLSearchParams()
-        formData.append('grant_type', 'authorization_code')
-        formData.append('code', code)
-        formData.append('redirect_uri', redirect_uri)
-        try {
-            const response = await axios.post('https://accounts.spotify.com/api/token', formData, {
-                headers: {
-                    'Authorization': `Basic ${authString}`,
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                }
-            });
-            TOKEN = response.data.access_token
-            const profileData = await getProfile()
-            const topSongsData = await getTopSongs()
-            const topArtistsData = await getTopArtists()
-            res.status(200).send({ msg: 'OK!', token: TOKEN, profile: profileData, topSongs: topSongsData, topArtists: topArtistsData })
-        } catch (error) {
-            res.status(500).send({ error: 'Empty response from token endpoint' })
-        }
 
+    const code = req.query.code
+    const authString = new Buffer.from(`${client_id}:${client_secret}`).toString('base64');
+    const formData = new URLSearchParams()
+    formData.append('grant_type', 'authorization_code')
+    formData.append('code', code)
+    formData.append('redirect_uri', redirect_uri)
+    try {
+        const response = await axios.post('https://accounts.spotify.com/api/token', formData, {
+            headers: {
+                'Authorization': `Basic ${authString}`,
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        });
+        TOKEN = response.data.access_token
+        const profileData = await getProfile()
+        const topSongsData = await getTopSongs()
+        const topArtistsData = await getTopArtists()
+        res.status(200).send({ profile: profileData, topSongs: topSongsData, topArtists: topArtistsData })
+    } catch (error) {
+        res.status(500).send({ error: '== Empty response from token endpoint' })
     }
 })
 
