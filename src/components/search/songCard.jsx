@@ -237,9 +237,11 @@ export default function SongCard({song, currentSong, setCurrentSong, songRef}) {
     }
 
     const handleVolumeChange = (e) => {
-        const newVolume = parseFloat(e.target.value)
-        setVolume(newVolume)
-        songRef.current.volume = newVolume
+        if (item) {
+            const newVolume = parseFloat(e.target.value)
+            setVolume(newVolume)
+            songRef.current.volume = newVolume
+        }
     }
 
     return (
