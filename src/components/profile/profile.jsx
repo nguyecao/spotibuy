@@ -25,6 +25,7 @@ const ProfileContainer = styled.div`
         border-radius: 50%;
         height: 160px;
         width: 160px;
+        background-color: black;
     }
     h1 {
         font-size: 86px;
@@ -58,9 +59,6 @@ const ProfileContainer = styled.div`
     }
     .profileImg {
         height: 100%;
-        min-width: 100%;
-        min-height: 100%;
-        width: auto;
     }
     h2 {
         font-size: 56px;
