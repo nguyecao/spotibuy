@@ -239,7 +239,7 @@ export default function SongCard({song, currentSong, setCurrentSong, songRef}) {
     const handleVolumeChange = (e) => {
         const newVolume = parseFloat(e.target.value)
         setVolume(newVolume)
-        if (songRef.current.src = song.preview_url) {
+        if (currentSong === song.id) {
             songRef.current.volume = newVolume
         }
     }
