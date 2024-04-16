@@ -191,6 +191,10 @@ app.post('/api/tokenExchange', async (req, res) => {
     formData.append('grant_type', 'authorization_code')
     formData.append('code', code)
     formData.append('redirect_uri', redirect_uri)
+    console.log(' -- req.originalUrl:', req.originalUrl)
+    console.log(' -- https://accounts.spotify.com/api/token')
+    console.log(' -- ' + formData)
+    console.log(' -- ' + authString)
     try {
         const response = await axios.post('https://accounts.spotify.com/api/token', formData, {
             headers: {
