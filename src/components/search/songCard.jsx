@@ -221,6 +221,7 @@ export default function SongCard({song, currentSong, setCurrentSong, songRef}) {
     const handlePlay = () => {
         if (song.preview_url) {
             // creates new isntance of song if new song is selected
+            songRef.current.volume = volume
             if (song.id !== currentSong) {
                 setCurrentSong(song.id)
                 songRef.current.src = song.preview_url
