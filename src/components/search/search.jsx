@@ -83,7 +83,7 @@ export default function Search() {
 
     useEffect(() => {
         async function getSuggestedSearches() {
-            axios.get(`/api/suggestedSearches`, {})
+            axios.get(`https://spotibuy-backend.onrender.com/api/suggestedSearches`, {})
                 .then(response => {
                     const trendingSongs = response.data.tracks.items.map(song => song.track.name)
                     const trendingArtists = response.data.tracks.items.map(song => song.track.artists[0].name)

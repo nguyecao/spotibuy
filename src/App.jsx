@@ -176,7 +176,7 @@ function App({ children }) {
 
     useEffect(() => {
         async function exchangeForAccessToken(code) {
-            axios.post(`/api/tokenExchange?code=${code}`, {
+            axios.post(`https://spotibuy-backend.onrender.com/api/tokenExchange?code=${code}`, {
                 headers: {
                     'Content-Type': 'application/json'
                 }

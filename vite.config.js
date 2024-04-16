@@ -11,8 +11,8 @@ export default defineConfig({
     })],
     server: {
         proxy: {
-            '/api': 'https://spotibuy-backend.onrender.com'
-            // '/api': 'http://localhost:8000'
+            // '/api': 'https://spotibuy-backend.onrender.com'
+            '/api': 'http://localhost:8000'
         }
     }
 })

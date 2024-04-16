@@ -60,7 +60,7 @@ export default function Success({playlistId, orderTotal}) {
     const [playlistData, setPlaylistData] = useState(null)
     useEffect(() => {
         dispatch(clearCart())
-        axios.get('/api/successOrder', {
+        axios.get('https://spotibuy-backend.onrender.com/api/successOrder', {
             params: {
                 playlistId: playlistId
             }

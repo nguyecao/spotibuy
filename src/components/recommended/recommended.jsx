@@ -64,7 +64,7 @@ export default function Recommended() {
     useEffect(() => {
         setRefreshingSongs(true)
         const topSongIdsString = `${topSongIds[(refreshSongsClicks * 5) % topSongIds.length]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 1]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 2]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 3]},${topSongIds[(refreshSongsClicks * 5) % topSongIds.length + 4]}`
-        axios.get('/api/refreshSongs', {
+        axios.get('https://spotibuy-backend.onrender.com/api/refreshSongs', {
             params: {
                 topSongIdsString: topSongIdsString
             }
@@ -82,7 +82,7 @@ export default function Recommended() {
     useEffect(() => {
         setRefreshingArtists(true)
         const topArtistId = topArtistIds[refreshArtistsClicks % topArtistIds.length]
-        axios.get('/api/refreshArtists', {
+        axios.get('https://spotibuy-backend.onrender.com/api/refreshArtists', {
             params: {
                 topArtistId: topArtistId
             }

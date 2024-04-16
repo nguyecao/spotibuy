@@ -83,7 +83,7 @@ export default function OrderSummary({setNewPlaylistId, setOrderTotal}) {
             description: 'Created on Spotibuy',
             public: true
         }
-        axios.post('/api/createPlaylist', null, {
+        axios.post('https://spotibuy-backend.onrender.com/api/createPlaylist', null, {
             params: {
                 playlistData: playlistData,
                 uris: uris,
