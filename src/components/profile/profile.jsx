@@ -18,12 +18,13 @@ const ProfileContainer = styled.div`
         margin-bottom: 30px;
     }
     .imgContainer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow:hidden;
+        border-radius: 50%;
         height: 160px;
         width: 160px;
-        min-width: 120px;
-        min-height: 120px;
-        overflow: hidden;
-        border-radius: 50%;
     }
     h1 {
         font-size: 86px;
@@ -56,10 +57,8 @@ const ProfileContainer = styled.div`
         margin-right: auto;
     }
     .profileImg {
-        display: inline;
-        margin-left: -25%; //centers the image
-        height: 100%;
-        width: auto;
+        min-width: 100%;
+        min-height: 100%;
     }
     h2 {
         font-size: 56px;
