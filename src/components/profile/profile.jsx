@@ -57,8 +57,10 @@ const ProfileContainer = styled.div`
         margin-right: auto;
     }
     .profileImg {
+        height: 100%;
         min-width: 100%;
         min-height: 100%;
+        width: auto;
     }
     h2 {
         font-size: 56px;
