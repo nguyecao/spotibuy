@@ -36,5 +36,18 @@ Spotibuy offers a seamless and enjoyable music shopping experience:
 
 **Enjoy Recommendations:** Discover new music tailored to your taste based on your listening history and preferences.
 
+### Demo and Screenshots:
+
+[![YouTube](http://i.ytimg.com/vi/J__Z0ytNado/hqdefault.jpg)](https://www.youtube.com/watch?v=J__Z0ytNado)
+
+![Alt text](screenshots/login.png)
+![Alt text](screenshots/about.png)
+![Alt text](screenshots/recommended.png)
+![Alt text](screenshots/search.png)
+![Alt text](screenshots/cart.png)
+![Alt text](screenshots/confirmation.png)
+![Alt text](screenshots/profile1.png)
+![Alt text](screenshots/profile2.png)
+
 ## License:
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
