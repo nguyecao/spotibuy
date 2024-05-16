@@ -1,6 +1,7 @@
 # Spotibuy
 
 "Shop" for Music on Spotify
+[Spotibuy Demo Video](https://www.youtube.com/watch?v=J__Z0ytNado 'Spotibuy Demo')
 
 ## Project Description:
 
@@ -36,9 +37,7 @@ Spotibuy offers a seamless and enjoyable music shopping experience:
 
 **Enjoy Recommendations:** Discover new music tailored to your taste based on your listening history and preferences.
 
-### Demo and Screenshots:
-
-[Spotibuy Demo](https://www.youtube.com/watch?v=J__Z0ytNado 'Spotibuy Demo')
+### Screenshots:
 
 ![Alt text](screenshots/login.png)
 ![Alt text](screenshots/about.png)
