@@ -38,7 +38,7 @@ Spotibuy offers a seamless and enjoyable music shopping experience:
 
 ### Demo and Screenshots:
 
-[Link text](https://www.youtube.com/watch?v=J__Z0ytNado 'Spotibuy Demo')
+[Spotibuy Demo](https://www.youtube.com/watch?v=J__Z0ytNado 'Spotibuy Demo')
 
 ![Alt text](screenshots/login.png)
 ![Alt text](screenshots/about.png)
